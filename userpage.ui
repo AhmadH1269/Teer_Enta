@@ -1,0 +1,1130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UserPageMain</class>
+ <widget class="QMainWindow" name="UserPageMain">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>859</width>
+    <height>633</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_11">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="HomeButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::GoHome"/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ProfileButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::UserAvailable"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="minimumSize">
+         <size>
+          <width>761</width>
+          <height>391</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <widget class="QWidget" name="Home">
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="1">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>110</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>80</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>Ready for a new adventure?</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="BookingPageButton">
+                  <property name="text">
+                   <string>Book Now</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="ScheduleArea">
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Schedule for flights</string>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTableWidget" name="MaintableWidget">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::LeftToRight</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">selection-background-color: rgb(84, 199, 50);</string>
+                </property>
+                <property name="verticalScrollBarPolicy">
+                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+                </property>
+                <property name="alternatingRowColors">
+                 <bool>false</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                </property>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <attribute name="verticalHeaderHighlightSections">
+                 <bool>true</bool>
+                </attribute>
+                <row>
+                 <property name="text">
+                  <string>New Row</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>New Row</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>New Row</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>New Row</string>
+                 </property>
+                </row>
+                <column>
+                 <property name="text">
+                  <string>Departure Airport </string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Arrival Airport</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>TakeOff Time</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="FullSchedButton">
+                <property name="text">
+                 <string>View Full Schedule</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="2">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>80</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>110</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page">
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="1" column="0">
+           <widget class="QPushButton" name="CancelButton1">
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QScrollArea" name="scrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>568</width>
+               <height>922</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>Leaving from</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="DepartureAirport"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Policy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QLabel" name="label_9">
+                    <property name="text">
+                     <string>Going to?</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="ArrivalAirport"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="DestinationImaGE">
+                  <property name="text">
+                   <string>TextLabel</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <spacer name="verticalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Policy::Minimum</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QFrame" name="AvailableFlights">
+                  <property name="frameShape">
+                   <enum>QFrame::Shape::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Shadow::Raised</enum>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_5">
+                   <item row="0" column="0">
+                    <layout class="QHBoxLayout" name="horizontalLayout_15">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_8">
+                       <item>
+                        <widget class="QLabel" name="FirstPlane">
+                         <property name="text">
+                          <string>Plane:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="DestinationLabel1">
+                         <property name="text">
+                          <string>Goes to:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="LeavingDate1">
+                         <property name="text">
+                          <string>Departure Date:</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="FirstAvFlight">
+                       <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item row="0" column="1">
+                    <layout class="QHBoxLayout" name="horizontalLayout_14">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_7">
+                       <item>
+                        <widget class="QLabel" name="SecondPlane">
+                         <property name="text">
+                          <string>Plane:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="DestinationLabel2">
+                         <property name="text">
+                          <string>Goes to:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="LeavingDate2">
+                         <property name="text">
+                          <string>Departure Date:</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="SecondAvFlight">
+                       <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item row="0" column="2">
+                    <layout class="QHBoxLayout" name="horizontalLayout_10">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_6">
+                       <item>
+                        <widget class="QLabel" name="ThirdPlane">
+                         <property name="text">
+                          <string>Plane:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="DestinationLabel3">
+                         <property name="text">
+                          <string>Goes to:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="LeavingDate3">
+                         <property name="text">
+                          <string>Departure Date:</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="ThirdAvFlight">
+                       <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <item>
+                   <layout class="QHBoxLayout" name="AdultComboBox_2">
+                    <item>
+                     <widget class="QLabel" name="AdultLabel">
+                      <property name="text">
+                       <string>How Many Adults?</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="AdultComboBox">
+                      <item>
+                       <property name="text">
+                        <string>1</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>2</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>3</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>4</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>5</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>6</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>7</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_9">
+                    <item>
+                     <widget class="QLabel" name="ChildrenLabel">
+                      <property name="text">
+                       <string>How Many Children</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="ChildrenComboBox">
+                      <item>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>1</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>2</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>3</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>4</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>5</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <property name="sizeConstraint">
+                   <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+                  </property>
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>13</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_4">
+                    <property name="sizeConstraint">
+                     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+                    </property>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QTableWidget" name="SeatSelection">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>616</height>
+                     </size>
+                    </property>
+                    <property name="sizeAdjustPolicy">
+                     <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+                    </property>
+                    <property name="editTriggers">
+                     <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+                    </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+                    </property>
+                    <property name="showGrid">
+                     <bool>false</bool>
+                    </property>
+                    <attribute name="horizontalHeaderMinimumSectionSize">
+                     <number>75</number>
+                    </attribute>
+                    <attribute name="horizontalHeaderDefaultSectionSize">
+                     <number>75</number>
+                    </attribute>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <attribute name="verticalHeaderMinimumSectionSize">
+                     <number>74</number>
+                    </attribute>
+                    <attribute name="verticalHeaderDefaultSectionSize">
+                     <number>75</number>
+                    </attribute>
+                    <row>
+                     <property name="text">
+                      <string>A</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>B</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>C</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>D</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>E</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>F</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>G</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>H</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>I</string>
+                     </property>
+                    </row>
+                    <column/>
+                    <column/>
+                    <column/>
+                    <column>
+                     <property name="text">
+                      <string>Aisle 1</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>4</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>5</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>6</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Aisle 2</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>7</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>8</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>9</string>
+                     </property>
+                    </column>
+                    <column/>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_8">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>13</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Policy::Minimum</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item row="3" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_7">
+                <property name="sizeConstraint">
+                 <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+                </property>
+                <item>
+                 <widget class="QLabel" name="PriceTotal">
+                  <property name="text">
+                   <string>Total Price: </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="PriceDisplay">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Policy::Maximum</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>70</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="PaymentButton">
+                  <property name="text">
+                   <string>Pay Now</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="Profile">
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="1" column="0">
+           <spacer name="verticalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>70</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="1" column="0">
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Policy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>15</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="3">
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Name :</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="UsernameLabel">
+                <property name="text">
+                 <string>Name </string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="3">
+             <spacer name="verticalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Policy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Policy::Maximum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>75</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1" rowspan="2">
+             <widget class="QPushButton" name="pushButton_2">
+              <property name="minimumSize">
+               <size>
+                <width>85</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>85</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset theme="QIcon::ThemeIcon::UserAvailable"/>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>64</width>
+                <height>64</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <item>
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>Email Adress:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="EmailLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Email Adress</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="LogOutButton">
+            <property name="text">
+             <string>Log Out</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>80</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="3">
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Booked Flights</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <spacer name="verticalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2" rowspan="5">
+           <widget class="QFrame" name="frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="0">
+              <widget class="QTableWidget" name="BookedTableWidget">
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">selection-background-color: rgb(84, 199, 50);</string>
+               </property>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+               </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+               </property>
+               <property name="gridStyle">
+                <enum>Qt::PenStyle::DashDotLine</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="horizontalHeaderCascadingSectionResizes">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Booking Number</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Departure Airport</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Arrival Airport</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Take-off Time</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Total Passengers</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Price</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

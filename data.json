@@ -1,0 +1,601 @@
+{
+    "admins": [
+        {
+            "admin_ID": 0,
+            "email": "jake@gmail.com",
+            "password": 465822,
+            "username": "jakson"
+        },
+        {
+            "admin_ID": 1,
+            "email": "a@gmail.com",
+            "password": 399907,
+            "username": "zizo"
+        }
+    ],
+    "airplanes": [
+        {
+            "current_city": "Cairo",
+            "fuel_price": 5.5,
+            "manufacturer": "Boeing",
+            "model": "737-800",
+            "number_of_flights": 12,
+            "number_of_seats": 180,
+            "plane_ID": 0,
+            "speed": 850.0
+        },
+        {
+            "current_city": "Dubai",
+            "fuel_price": 5.2,
+            "manufacturer": "Airbus",
+            "model": "A321",
+            "number_of_flights": 8,
+            "number_of_seats": 220,
+            "plane_ID": 1,
+            "speed": 830.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 2,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 3,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 4,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 5,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 6,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 7,
+            "speed": 900.0
+        }
+    ],
+    "airports": [
+        {
+            "airport_ID": 0,
+            "capacity": 50,
+            "city": {
+                "city": "Cairo",
+                "code": "CAI",
+                "latitude": 30.1219,
+                "longitude": 31.4056
+            },
+            "email": "cairo@airport.com",
+            "free_planes_IDs": [
+                7
+            ],
+            "future_flights_IDs": [
+                0,
+                2,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "password": 1111,
+            "pending_planes": [
+                3
+            ],
+            "pending_requests": [],
+            "scheduled_planes_IDs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                4,
+                4,
+                4,
+                4,
+                4,
+                4,
+                4
+            ],
+            "sent_requests": [
+                {
+                    "arrival_date": 29629662,
+                    "available_seats": 300,
+                    "departure_date": 29629483,
+                    "estimated_time": 179,
+                    "flight_ID": 1,
+                    "from": "CAI",
+                    "from_airport_ID": 0,
+                    "high_price": 151,
+                    "low_price": 75,
+                    "mid_price": 113,
+                    "plane_ID": 3,
+                    "to": "DXB",
+                    "to_airport_ID": 1
+                }
+            ]
+        },
+        {
+            "airport_ID": 1,
+            "capacity": 70,
+            "city": {
+                "city": "Dubai",
+                "code": "DXB",
+                "latitude": 25.2532,
+                "longitude": 55.3644
+            },
+            "email": "dubai@airport.com",
+            "free_planes_IDs": [
+                6
+            ],
+            "future_flights_IDs": [
+                0,
+                1,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "password": 2222,
+            "pending_planes": [],
+            "pending_requests": [
+                {
+                    "arrival_date": 29629662,
+                    "available_seats": 300,
+                    "departure_date": 29629483,
+                    "estimated_time": 179,
+                    "flight_ID": 1,
+                    "from": "CAI",
+                    "from_airport_ID": 0,
+                    "high_price": 151,
+                    "low_price": 75,
+                    "mid_price": 113,
+                    "plane_ID": 3,
+                    "to": "DXB",
+                    "to_airport_ID": 1
+                }
+            ],
+            "scheduled_planes_IDs": [
+                1
+            ],
+            "sent_requests": [
+                {
+                    "arrival_date": 29629775,
+                    "available_seats": 300,
+                    "departure_date": 29629596,
+                    "estimated_time": 179,
+                    "flight_ID": 0,
+                    "from": "DXB",
+                    "from_airport_ID": 1,
+                    "high_price": 151,
+                    "low_price": 75,
+                    "mid_price": 113,
+                    "plane_ID": 5,
+                    "to": "CAI",
+                    "to_airport_ID": 0
+                }
+            ]
+        },
+        {
+            "airport_ID": 2,
+            "capacity": 100,
+            "city": {
+                "city": "London",
+                "code": "LHR",
+                "latitude": 51.47,
+                "longitude": -0.4543
+            },
+            "email": "london@airport.com",
+            "free_planes_IDs": [],
+            "future_flights_IDs": [
+                1
+            ],
+            "password": 3333,
+            "pending_planes": [],
+            "pending_requests": [
+                {
+                    "arrival_date": 29629776,
+                    "available_seats": 180,
+                    "departure_date": 29629478,
+                    "estimated_time": 298,
+                    "flight_ID": 0,
+                    "from": "CAI",
+                    "from_airport_ID": 0,
+                    "high_price": 335,
+                    "low_price": 167,
+                    "mid_price": 251,
+                    "plane_ID": 0,
+                    "to": "LHR",
+                    "to_airport_ID": 2
+                }
+            ],
+            "scheduled_planes_IDs": [],
+            "sent_requests": [
+                {
+                    "arrival_date": 29629776,
+                    "available_seats": 180,
+                    "departure_date": 29629478,
+                    "estimated_time": 298,
+                    "flight_ID": 0,
+                    "from": "CAI",
+                    "from_airport_ID": 0,
+                    "high_price": 335,
+                    "low_price": 167,
+                    "mid_price": 251,
+                    "plane_ID": 0,
+                    "to": "LHR",
+                    "to_airport_ID": 2
+                }
+            ]
+        },
+        {
+            "airport_ID": 3,
+            "capacity": 10,
+            "city": {
+                "city": "",
+                "code": "",
+                "latitude": 0.0,
+                "longitude": 0.0
+            },
+            "email": "airport",
+            "free_planes_IDs": [],
+            "future_flights_IDs": [],
+            "password": 338632,
+            "pending_planes": [],
+            "pending_requests": [],
+            "scheduled_planes_IDs": [],
+            "sent_requests": []
+        },
+        {
+            "airport_ID": 4,
+            "capacity": 20,
+            "city": {
+                "city": "Ciaro",
+                "code": "CAI",
+                "latitude": 31.9,
+                "longitude": 30.1
+            },
+            "email": "port@gmail.com",
+            "free_planes_IDs": [],
+            "future_flights_IDs": [],
+            "password": 466760,
+            "pending_planes": [],
+            "pending_requests": [],
+            "scheduled_planes_IDs": [],
+            "sent_requests": []
+        }
+    ],
+    "flights": [
+        {
+            "arrival_date": 30000180,
+            "available_seats": 150,
+            "departure_date": 30000000,
+            "estimated_time": 180,
+            "flight_ID": 0,
+            "from": "Cairo",
+            "from_airport_ID": 0,
+            "high_price": 500,
+            "low_price": 200,
+            "mid_price": 350,
+            "plane_ID": 0,
+            "to": "Dubai",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 30001420,
+            "available_seats": 200,
+            "departure_date": 30001000,
+            "estimated_time": 420,
+            "flight_ID": 1,
+            "from": "Dubai",
+            "from_airport_ID": 1,
+            "high_price": 800,
+            "low_price": 400,
+            "mid_price": 600,
+            "plane_ID": 1,
+            "to": "London",
+            "to_airport_ID": 2
+        },
+        {
+            "arrival_date": 30000180,
+            "available_seats": 150,
+            "departure_date": 30000000,
+            "estimated_time": 180,
+            "flight_ID": 2,
+            "from": "Cairo",
+            "from_airport_ID": 0,
+            "high_price": 500,
+            "low_price": 200,
+            "mid_price": 350,
+            "plane_ID": 0,
+            "to": "Dubai",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629781,
+            "available_seats": 180,
+            "departure_date": 29629592,
+            "estimated_time": 189,
+            "flight_ID": 3,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 213,
+            "low_price": 106,
+            "mid_price": 160,
+            "plane_ID": 0,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629671,
+            "available_seats": 180,
+            "departure_date": 29629482,
+            "estimated_time": 189,
+            "flight_ID": 4,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 213,
+            "low_price": 106,
+            "mid_price": 160,
+            "plane_ID": 0,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629781,
+            "available_seats": 180,
+            "departure_date": 29629592,
+            "estimated_time": 189,
+            "flight_ID": 5,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 213,
+            "low_price": 106,
+            "mid_price": 160,
+            "plane_ID": 0,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629781,
+            "available_seats": 180,
+            "departure_date": 29629592,
+            "estimated_time": 189,
+            "flight_ID": 6,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 213,
+            "low_price": 106,
+            "mid_price": 160,
+            "plane_ID": 0,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 7,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 8,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 9,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 10,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 11,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 12,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29629771,
+            "available_seats": 300,
+            "departure_date": 29629592,
+            "estimated_time": 179,
+            "flight_ID": 13,
+            "from": "CAI",
+            "from_airport_ID": 0,
+            "high_price": 151,
+            "low_price": 75,
+            "mid_price": 113,
+            "plane_ID": 4,
+            "to": "DXB",
+            "to_airport_ID": 1
+        }
+    ],
+    "models": [
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 2,
+            "speed": 900.0
+        }
+    ],
+    "users": [
+        {
+            "email": "ahmad@test.com",
+            "flights_history": [],
+            "future_flights": [
+                0
+            ],
+            "password": 123456789,
+            "phone_number": "01000000000",
+            "seat_preference": 1,
+            "tickets": [
+                {
+                    "adults": 1,
+                    "children": 0,
+                    "flight_ID": 0,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 2,
+                            "row": 5,
+                            "tier": 2
+                        }
+                    ]
+                }
+            ],
+            "tier_preference": 2,
+            "user_ID": 0,
+            "username": "ahmad123"
+        },
+        {
+            "email": "",
+            "flights_history": [],
+            "future_flights": [],
+            "password": 161307,
+            "phone_number": "",
+            "seat_preference": 1,
+            "tickets": [],
+            "tier_preference": 2,
+            "user_ID": 1,
+            "username": "user"
+        },
+        {
+            "email": "user@gmail.com",
+            "flights_history": [],
+            "future_flights": [],
+            "password": 469870,
+            "phone_number": "011559111111",
+            "seat_preference": 1,
+            "tickets": [],
+            "tier_preference": 2,
+            "user_ID": 2,
+            "username": "User"
+        }
+    ]
+}

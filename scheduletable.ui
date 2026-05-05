@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScheduleTable</class>
+ <widget class="QWidget" name="ScheduleTable">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>934</width>
+    <height>555</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="layoutDirection">
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">selection-background-color: rgb(84, 199, 50);</string>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+     </property>
+     <property name="gridStyle">
+      <enum>Qt::PenStyle::DashDotLine</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>New Row</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>Flight ID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Departure Airport</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Airport Code</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Arrival Airport</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Airport Code</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Plane</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Take-off Time</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Status</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Estimated Duration</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
