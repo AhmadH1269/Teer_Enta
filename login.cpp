@@ -17,8 +17,6 @@ using namespace std;
 
 
 
-
-
 Login::Login(QWidget* parent) : QWidget(parent)
 {
     // Updated background to match Admin Page
@@ -54,17 +52,17 @@ Login::Login(QWidget* parent) : QWidget(parent)
         "}";
 
     name_edit = new QLineEdit(this);
-    name_edit->setPlaceholderText("Username");
+    name_edit->setPlaceholderText("اسمك و اسم الحج");
     name_edit->setFixedSize(250, 40);
 
     name_edit->setStyleSheet(inputStyle);
 
-    name = new QLabel("Name", this);
+    name = new QLabel("Emial/Username", this);
     name->setStyleSheet("color:#8A99A8; font: bold 14px;");
 
 
     password_edit = new QLineEdit(this);
-    password_edit->setPlaceholderText("Password");
+    password_edit->setPlaceholderText("كلمة السر 😉");
     password_edit->setEchoMode(QLineEdit::Password);
     password_edit->setFixedSize(250, 40);
 
@@ -99,11 +97,11 @@ Login::Login(QWidget* parent) : QWidget(parent)
         "}"
         "QPushButton:hover { background-color: rgba(0, 174, 239, 0.1); }";
 
-    buttonLog = new QPushButton("Log in", this);
+    buttonLog = new QPushButton("يا هلا يا هلااا", this);
     buttonLog->setFixedSize(110, 40);
     buttonLog->setStyleSheet(loginBtnStyle);
 
-    buttonSignup = new QPushButton("Sign up", this);
+    buttonSignup = new QPushButton("اسم الكريم", this);
     buttonSignup->setFixedSize(110, 40);
 
     buttonSignup->setStyleSheet(signupBtnStyle);
@@ -113,11 +111,6 @@ Login::Login(QWidget* parent) : QWidget(parent)
         sighnWin->show();
         this->close();
         });
-
-    //copyRights = new QLabel("ALL RIGHTS ARE RESERVED \n MADE BY CODE EAT SLEEP", this);
-    //copyRights->setStyleSheet("color: #5C6D7E; font: bold 9px; background: transparent;");
-    //copyRights->setAlignment(Qt::AlignCenter);
-    //copyRights->setFixedWidth(500);
 
 
     // Connections
@@ -154,9 +147,9 @@ void Login::LoginValid() {
 
         
         connect(buttonLog, &QPushButton::clicked, this, [=]() {
-            AdminPage* AdminWin = new AdminPage();
+            AdminPage* AdminWin = new AdminPage(result.second);
             AdminWin->show();
-            this->close(); 
+            this->close();
             });
 
 
@@ -227,8 +220,8 @@ void Login::loginLayout() {
 
     QHBoxLayout* buttonsLayout = new QHBoxLayout();
     buttonsLayout->addStretch();
-    buttonsLayout->addWidget(buttonLog);
     buttonsLayout->addWidget(buttonSignup);
+    buttonsLayout->addWidget(buttonLog);
     buttonsLayout->addStretch();
     mainLayout->addLayout(buttonsLayout);
     mainLayout->addStretch();// to make space undere the buttons
@@ -250,4 +243,3 @@ void Login::clearFields() {
     password_edit->clear();
     name_edit->setFocus();
 }
-
