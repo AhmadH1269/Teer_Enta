@@ -7,7 +7,6 @@
 #include "login.h"
 
 
-
 SignupPage::SignupPage(QWidget* parent) : QWidget(parent)
 
 {
@@ -60,6 +59,7 @@ void SignupPage::handleSignup() {
 
 
 void SignupPage::setupLayout() {
+	
 
 	QPalette pal = this->palette();
 	pal.setColor(QPalette::Window, QColor("#020617"));
@@ -80,42 +80,42 @@ void SignupPage::setupLayout() {
 		"QLineEdit:focus { border: 1px solid #00AEEF; }";
 
 	usernameEdit = new QLineEdit(this);
-	usernameEdit->setPlaceholderText("Username");
+	usernameEdit->setPlaceholderText("اسمك و اسم الحج");
 	usernameEdit->setFixedSize(250, 40);
 	usernameEdit->setStyleSheet(inputStyle);
 
 
 
 	emailEdit = new QLineEdit(this);
-	emailEdit->setPlaceholderText("email");
+	emailEdit->setPlaceholderText("البريد الإلكتروني");
 	emailEdit->setFixedSize(250, 40);
 	emailEdit->setStyleSheet(inputStyle);
 
 	phoneEdit = new QLineEdit(this);
-	phoneEdit->setPlaceholderText("Phone");
+	phoneEdit->setPlaceholderText("رقم المحمول");
 	phoneEdit->setFixedSize(250, 40);
 	phoneEdit->setStyleSheet(inputStyle);
 
 	passwordEdit = new QLineEdit(this);
-	passwordEdit->setPlaceholderText("Password");
+	passwordEdit->setPlaceholderText("أمن نفسك");
 	passwordEdit->setEchoMode(QLineEdit::Password);
 	passwordEdit->setFixedSize(250, 40);
 	passwordEdit->setStyleSheet(inputStyle);
 
 	confirmPasswordEdit = new QLineEdit(this);
-	confirmPasswordEdit->setPlaceholderText("Confirm Password");
+	confirmPasswordEdit->setPlaceholderText("زيادة امان");
 	confirmPasswordEdit->setEchoMode(QLineEdit::Password);
 	confirmPasswordEdit->setFixedSize(250, 40);
 	confirmPasswordEdit->setStyleSheet(inputStyle);
 
-	signupBtn = new QPushButton("Sign Up", this);
+	signupBtn = new QPushButton("عاشت الأسامي", this);
 	signupBtn->setFixedSize(110, 40);
 	signupBtn->setStyleSheet(
 		"QPushButton { background-color: #00AEEF; color: white;"
 		"border-radius: 5px; font: bold 15px; }"
 		"QPushButton:hover { background-color: #008CBA; }");
 
-	BackBtn = new QPushButton("Back", this);
+	BackBtn = new QPushButton("لف وأرجع تاني ", this);
 	BackBtn->setFixedSize(110, 40);
 	BackBtn->setStyleSheet(
 		"QPushButton { background-color: transparent; color: #00AEEF;"
@@ -129,7 +129,7 @@ void SignupPage::setupLayout() {
 		this->close();
 		});
 
-
+	
 
 	QString labelStyle = "color: #8A99A8; font: bold 14px;";
 
@@ -144,8 +144,6 @@ void SignupPage::setupLayout() {
 	phoneLbl->setStyleSheet(labelStyle);
 	passLbl->setStyleSheet(labelStyle);
 	confirmLbl->setStyleSheet(labelStyle);
-
-
 
 
 	QGridLayout* grid = new QGridLayout();
@@ -165,15 +163,13 @@ void SignupPage::setupLayout() {
 
 
 
-
 	QHBoxLayout* btnLayout = new QHBoxLayout();
 	btnLayout->addStretch();
 	btnLayout->addWidget(BackBtn);
 	btnLayout->addWidget(signupBtn);
 	btnLayout->addStretch();
 
-
-
+	
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->setContentsMargins(30, 30, 30, 30);
@@ -184,7 +180,6 @@ void SignupPage::setupLayout() {
 
 
 }
-
 
 
 void SignupPage::setupConnections() {
