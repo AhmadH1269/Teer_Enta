@@ -8,19 +8,24 @@
 using namespace std;
 
 
-AdminPage::AdminPage(QWidget* parent) : QWidget(parent) {
+AdminPage::AdminPage(int adminID, QWidget* parent) : QWidget(parent), admin_ID(adminID) {
 
-
-
-    // constructor body
     this->setWindowTitle("TEER ENTA ADMIN PAGE ");
-    // this->resize(1100, 600);
+  
 
     setupTables();
     setupAddPlaneForm();
+    setupAddAirportForm();
     setupLayout();
     setupConnections();
-    setupAddAirportForm();
+
+    loadUsersTable();
+    loadAdminsTable();
+    loadPlanesTable();
+    loadAirportsCards();
+
+    if (admin_ID >= 0 && admin_ID < admins.size)
+        setAdminInfo(QString::fromStdString(admins[admin_ID].username));
 }
 
 void AdminPage::setupTables() {
@@ -41,21 +46,14 @@ void AdminPage::setupTables() {
         "   font-weight: bold;"
         "}";
 
-   
-    usersTable = new QTableWidget(users.size, 4);
-    usersTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    usersTable->setHorizontalHeaderLabels({ "ID", "Name", "Role", "Email" });
-    usersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); // To make columns strech horizontally
-    usersTable->setStyleSheet(tableStyle);
-
     usersTable = new QTableWidget(0, 4);
+    usersTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     usersTable->setHorizontalHeaderLabels({ "ID", "Name", "Role", "Email" });
+    usersTable->verticalHeader()->setVisible(false);
     usersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     usersTable->setStyleSheet(tableStyle);
-    loadUsersTable();
 
-    
+
     adminsWidget = new QWidget();
     adminsWidget->setStyleSheet("background-color: #0b101e;");
 
@@ -67,9 +65,10 @@ void AdminPage::setupTables() {
     adminsTitle->setStyleSheet("font: bold 22px; color: #ffffff;");
     adminsLayout->addWidget(adminsTitle);
 
-    adminsTable = new QTableWidget(0, 1);
-    adminsTable->setHorizontalHeaderLabels({ "Name" });
+    adminsTable = new QTableWidget(0, 2);
+    adminsTable->setHorizontalHeaderLabels({ "Name", "Email" });
     adminsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //adminsTable->verticalHeader()->setVisible(false);
     adminsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     adminsTable->setStyleSheet(
         "QTableWidget { background-color: #0b101e; color: #5cd6ff;"
@@ -78,15 +77,8 @@ void AdminPage::setupTables() {
         "   padding: 8px; border: none; font-weight: bold; }"
     );
 
-    string initialAdmins[] = { "Ahmed Medhat","Ziad Badawy","Nour Mahmoud","Moataz Omran","Ziad Mohamed" };
-    for (int i = 0; i < 5; i++) {
-        int row = adminsTable->rowCount();
-        adminsTable->insertRow(row);
-        adminsTable->setItem(row, 0, new QTableWidgetItem(
-            QString::fromStdString(initialAdmins[i])));
-    }
-
     adminsLayout->addWidget(adminsTable);
+
     QPushButton* addAdminFromListBtn = new QPushButton("➕ Add Admin");
     addAdminFromListBtn->setFixedHeight(42);
     addAdminFromListBtn->setStyleSheet(
@@ -100,16 +92,16 @@ void AdminPage::setupTables() {
 
     adminsLayout->addStretch();
 
-    
+
 
     stackedWidget = new QStackedWidget();
     stackedWidget->setStyleSheet("background-color: #050811;");
-    stackedWidget->addWidget(usersTable);// index 0
+    stackedWidget->addWidget(usersTable); 
     QScrollArea* adminsScroll = new QScrollArea();
     adminsScroll->setWidget(adminsWidget);
     adminsScroll->setWidgetResizable(true);
     adminsScroll->setStyleSheet("border: none; background-color: #0b101e;");
-    stackedWidget->addWidget(adminsScroll); // index 1
+    stackedWidget->addWidget(adminsScroll); 
 
 }
 void AdminPage::setupAddPlaneForm() {
@@ -125,7 +117,7 @@ void AdminPage::setupAddPlaneForm() {
     title->setStyleSheet("font: bold 22px; color: #ffffff;");
     mainLay->addWidget(title);
 
-    
+
     QFrame* card = new QFrame();
     card->setStyleSheet(
         "QFrame { background-color: #1c2237; border-radius: 12px;"
@@ -144,22 +136,13 @@ void AdminPage::setupAddPlaneForm() {
     form->setSpacing(18);
     form->setLabelAlignment(Qt::AlignRight);
 
-    manufacturerCombo = new QComboBox();
-    manufacturerCombo->setFixedHeight(38);
-    manufacturerCombo->setStyleSheet(
-        "QComboBox { background-color: #0b101e; border: 1px solid #33475B;"
-        "   border-radius: 6px; padding: 8px; color: #ffffff; font-size: 13px; }"
-        "QComboBox QAbstractItemView { background-color: #1c2237; color: white; }"
-    );
-    manufacturerCombo->addItems({ "Airbus", "Boeing", "Embraer" });
+    manufacturerEdit = new QLineEdit();
+    manufacturerEdit->setPlaceholderText("e.g. Airbus");
+    manufacturerEdit->setFixedHeight(38);
 
-    modelCombo = new QComboBox();
-    modelCombo->setFixedHeight(38);
-    modelCombo->setStyleSheet(
-        "QComboBox { background-color: #0b101e; border: 1px solid #33475B;"
-        "   border-radius: 6px; padding: 8px; color: #ffffff; font-size: 13px; }"
-        "QComboBox QAbstractItemView { background-color: #1c2237; color: white; }"
-    );
+    modelEdit = new QLineEdit();
+    modelEdit->setPlaceholderText("e.g. A320");
+    modelEdit->setFixedHeight(38);
 
     planeSeatsEdit = new QLineEdit();
     planeSeatsEdit->setPlaceholderText("e.g. 180");
@@ -173,16 +156,11 @@ void AdminPage::setupAddPlaneForm() {
     planeFuelEdit->setPlaceholderText("e.g. 12.5");
     planeFuelEdit->setFixedHeight(38);
 
-    form->addRow("Manufacturer :", manufacturerCombo);
-    form->addRow("Model :", modelCombo);
+    form->addRow("Manufacturer :", manufacturerEdit);
+    form->addRow("Model :", modelEdit);
     form->addRow("Seats :", planeSeatsEdit);
     form->addRow("Speed (km/h) :", planeSpeedEdit);
     form->addRow("Fuel Price/km :", planeFuelEdit);
-
-    updatePlaneModels();
-
-    connect(manufacturerCombo, &QComboBox::currentTextChanged,
-        this, &AdminPage::updatePlaneModels);
 
 
 
@@ -208,7 +186,9 @@ void AdminPage::setupAddPlaneForm() {
 
 
     planesTable = new QTableWidget(0, 5);
-    planesTable->setHorizontalHeaderLabels({ "#", "Manufacturer", "Model", "Seats", "Speed" }); planesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    planesTable->setHorizontalHeaderLabels({ "#", "Manufacturer", "Model", "Seats", "Speed" });
+    planesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    planesTable->verticalHeader()->setVisible(false);
     planesTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     planesTable->setMinimumHeight(120);
     planesTable->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -225,10 +205,10 @@ void AdminPage::setupAddPlaneForm() {
     planeScroll->setWidget(addPlaneWidget);
     planeScroll->setWidgetResizable(true);
     planeScroll->setStyleSheet("border: none; background-color: #0b101e;");
-    stackedWidget->addWidget(planeScroll);
+    stackedWidget->addWidget(planeScroll); // index 2
 
 
-    setupEnterNavigation({ planeSeatsEdit, planeSpeedEdit, planeFuelEdit });//----> enter pressed fn
+    setupEnterNavigation({ manufacturerEdit, modelEdit, planeSeatsEdit, planeSpeedEdit, planeFuelEdit });//----> enter pressed fn
 
 }
 
@@ -236,7 +216,7 @@ void AdminPage::showAddUserDialog() {
 
     QDialog* dialog = new QDialog(this);
     dialog->setWindowTitle("Add New User");
-    dialog->setFixedSize(420, 340);
+    dialog->setFixedSize(420, 460);
     dialog->setStyleSheet(
         "QDialog { background-color: #0b101e; }"
         "QLabel  { color: #a0a7b5; font-size: 13px; }"
@@ -260,21 +240,22 @@ void AdminPage::showAddUserDialog() {
     form->setSpacing(12);
     form->setLabelAlignment(Qt::AlignRight);
 
+    QLineEdit* nameEdit = new QLineEdit();        nameEdit->setPlaceholderText("Full Name");
+    QLineEdit* emailEdit = new QLineEdit();       emailEdit->setPlaceholderText("e.g. user@mail.com");
+    QLineEdit* phoneEdit = new QLineEdit();       phoneEdit->setPlaceholderText("Phone number");
+    QLineEdit* passEdit = new QLineEdit();        passEdit->setPlaceholderText("Password");
+    passEdit->setEchoMode(QLineEdit::Password);
+    QLineEdit* confirmEdit = new QLineEdit();     confirmEdit->setPlaceholderText("Confirm password");
+    confirmEdit->setEchoMode(QLineEdit::Password);
 
-    
-
-    QLineEdit* idEdit = new QLineEdit(); idEdit->setPlaceholderText("e.g. 20251700310");
-    QLineEdit* nameEdit = new QLineEdit(); nameEdit->setPlaceholderText("Full Name");
-    QLineEdit* roleEdit = new QLineEdit(); roleEdit->setPlaceholderText("e.g. Passenger");
-    QLineEdit* emailEdit = new QLineEdit(); emailEdit->setPlaceholderText("e.g. user@mail.com");
-
-    for (auto* le : { idEdit,nameEdit,roleEdit,emailEdit })
+    for (auto* le : { nameEdit, emailEdit, phoneEdit, passEdit, confirmEdit })
         le->setFixedHeight(36);
 
-    form->addRow("ID :", idEdit);
     form->addRow("Name :", nameEdit);
-    form->addRow("Role :", roleEdit);
     form->addRow("Email :", emailEdit);
+    form->addRow("Phone :", phoneEdit);
+    form->addRow("Password :", passEdit);
+    form->addRow("Confirm :", confirmEdit);
     dlgLayout->addLayout(form);
 
 
@@ -307,46 +288,42 @@ void AdminPage::showAddUserDialog() {
 
     connect(confirmBtn, &QPushButton::clicked, dialog, [=]() {
 
-       
-
-
-        if (idEdit->text().trimmed().isEmpty() ||
-            nameEdit->text().trimmed().isEmpty() ||
-            roleEdit->text().trimmed().isEmpty() ||
-            emailEdit->text().trimmed().isEmpty()) {
+        if (nameEdit->text().trimmed().isEmpty() ||
+            emailEdit->text().trimmed().isEmpty() ||
+            phoneEdit->text().trimmed().isEmpty() ||
+            passEdit->text().isEmpty() ||
+            confirmEdit->text().isEmpty()) {
             QMessageBox::warning(dialog, "Missing Info", "Please fill in all fields.");
             return;
         }
 
-        int insertRow = 0;
-        for (int i = 0; i < usersTable->rowCount(); i++) {
-            QTableWidgetItem* it = usersTable->item(i, 0);
-            if (it && !it->text().isEmpty())
-                insertRow = i + 1;
-            else
-                break;
+        // Call backend
+        SIGN_UP result = signup(
+            emailEdit->text().trimmed().toStdString(),
+            nameEdit->text().trimmed().toStdString(),
+            passEdit->text().toStdString(),
+            confirmEdit->text().toStdString(),
+            phoneEdit->text().trimmed().toStdString()
+        ).first;
+
+        if (result == USER_SUCCESS) {
+            loadUsersTable();
+            QMessageBox::information(dialog, "Success",
+                "✅  User \"" + nameEdit->text().trimmed() + "\" added successfully!");
+            dialog->accept();
         }
-
-        usersTable->setItem(insertRow, 0,
-            new QTableWidgetItem(idEdit->text().trimmed()));
-        usersTable->setItem(insertRow, 1,
-            new QTableWidgetItem(nameEdit->text().trimmed()));
-        usersTable->setItem(insertRow, 2,
-            new QTableWidgetItem(roleEdit->text().trimmed()));
-        usersTable->setItem(insertRow, 3,
-            new QTableWidgetItem(emailEdit->text().trimmed()));
-
-
-
-        usersTable->scrollToItem(usersTable->item(insertRow, 0));
-
-        setupEnterNavigation({ idEdit, nameEdit, roleEdit, emailEdit });//------> enter pressed
-
-        QMessageBox::information(dialog, "Success",
-            "✅  User "" + nameEdit->text().trimmed() + "" added successfully!");
-        dialog->accept();
+        else if (result == USER_PASSWORD_MISMATCH)
+            QMessageBox::warning(dialog, "Error", "Passwords don't match.");
+        else if (result == USER_WEAK_PASSWORD)
+            QMessageBox::warning(dialog, "Error", "Password too weak.");
+        else if (result == USER_EMAIL_USED)
+            QMessageBox::warning(dialog, "Error", "Email already used.");
+        else if (result == USER_USERNAME_TAKEN)
+            QMessageBox::warning(dialog, "Error", "Username already taken.");
+        else QMessageBox::warning(dialog, "Error", "Could not add user.");
         });
 
+    setupEnterNavigation({ nameEdit, emailEdit, phoneEdit, passEdit, confirmEdit });
     dialog->exec();
 
 }
@@ -379,8 +356,6 @@ void AdminPage::setupLayout() {
     sideMenuLayout->addSpacing(20);
 
 
-
-
     QWidget* profileWidget = new QWidget();
     QVBoxLayout* profileLayout = new QVBoxLayout(profileWidget);
 
@@ -408,25 +383,16 @@ void AdminPage::setupLayout() {
     sideMenuLayout->addSpacing(20);
 
 
-
-
-
     QString sideBtnStyle =
-        "QPushButton { backgrou nd-color: transparent; color: #8a92a6; border: none; text-align: left; padding: 15px 25px; font-size: 15px; }"
+        "QPushButton { background-color: transparent; color: #8a92a6; border: none; text-align: left; padding: 15px 25px; font-size: 15px; }"
         "QPushButton:hover { background-color: #1c2237; color: #ffffff; border-radius: 10px; }";
 
 
-    addPlaneBtn = new QPushButton("  🛫 Add Airport"); 
+    addPlaneBtn = new QPushButton("  🛫 Add Airport");
     userManagmentBtn = new QPushButton(" 👤 User Management");
     addAdminBtn = new QPushButton(" 👑 Add Admin");
     viewAdminsBtn = new QPushButton(" ➕ Add Airplane");
     addAirportBtn = new QPushButton(" 👑 View Admins");
-    refreshBtn = new QPushButton("🔄 Refresh");
-    refreshBtn->setFixedWidth(100);
-    refreshBtn->setStyleSheet(
-        "QPushButton { background-color: #1c2237; color: #5cd6ff;"
-        "border: 1px solid #5cd6ff; border-radius: 8px; padding: 8px; }"
-        "QPushButton:hover { background-color: #2a3350; }");
 
     userManagmentBtn->setStyleSheet(sideBtnStyle);
     addPlaneBtn->setStyleSheet(sideBtnStyle);
@@ -437,12 +403,6 @@ void AdminPage::setupLayout() {
     logoutBtn = new QPushButton(" 🚪 Log Out");
     logoutBtn->setStyleSheet("QPushButton { background-color: #3d1c1c; color: #ff6b6b; border-radius: 8px; padding: 10px; margin: 10px; font-weight: bold; border: none; }"
         "QPushButton:hover { background-color: #c0392b; color: white; }");
-    //logout function 
-    connect(logoutBtn, &QPushButton::clicked, this, [=]() {
-        Login* loginpage = new Login();
-        loginpage->show();
-        this->close();
-        });
 
 
     sideMenuLayout->addWidget(userManagmentBtn);
@@ -463,7 +423,6 @@ void AdminPage::setupLayout() {
     topBarLayout->addWidget(tableTitleLabel);
     topBarLayout->addStretch();
     topBarLayout->addWidget(addUserBtn);
-    topBarLayout->addWidget(refreshBtn);
     topBarLayout->setContentsMargins(20, 20, 20, 10);
 
     QVBoxLayout* contentLayout = new QVBoxLayout();
@@ -483,54 +442,51 @@ void AdminPage::setupLayout() {
 
 void AdminPage::setupConnections() {
 
-    connect(refreshBtn, &QPushButton::clicked,
-        this, &AdminPage::loadUsersTable);
-
-
+ 
     connect(userManagmentBtn, &QPushButton::clicked, [this]() {
-        loadUsersTable();
         stackedWidget->setCurrentIndex(0);
         tableTitleLabel->setText("USER MANAGEMENT 👤");
         addUserBtn->setVisible(true);
+        loadUsersTable();
         });
-
-    //connect(flightMonitorBtn, &QPushButton::clicked, [this]() {
-    //    stackedWidget->setCurrentIndex(1);
-    //    tableTitleLabel->setText("FLIGHT MONITOR ✈️");
-    //    addUserBtn->setVisible(false);
-    //    });
 
     connect(addPlaneBtn, &QPushButton::clicked, [this]() {
         stackedWidget->setCurrentIndex(3);
-        tableTitleLabel->setText("ADD AIRPORT ✈️");
+        tableTitleLabel->setText("ADD AIRPORT 🛫");
         addUserBtn->setVisible(false);
+        updateAirportCombo();
+        loadAirportsCards();
         });
+
     connect(viewAdminsBtn, &QPushButton::clicked, [this]() {
         stackedWidget->setCurrentIndex(2);
         tableTitleLabel->setText("ADD PLANE ✈️");
         addUserBtn->setVisible(false);
+        loadPlanesTable();
         });
+
     connect(addAirportBtn, &QPushButton::clicked, [this]() {
         stackedWidget->setCurrentIndex(1);
-        tableTitleLabel->setText("ADD ADMIN 👑");
+        tableTitleLabel->setText("ADMINS LIST 👑");
         addUserBtn->setVisible(false);
+        loadAdminsTable();
         });
+
     connect(addAdminBtn, &QPushButton::clicked, this, &AdminPage::showAddAdminDialog);
     connect(addUserBtn, &QPushButton::clicked, this, &AdminPage::showAddUserDialog);
-    connect(logoutBtn, &QPushButton::clicked, this, &AdminPage::logoutRequested);
+
+   
+    connect(logoutBtn, &QPushButton::clicked, this, [this]() {
+        emit logoutRequested();
+        Login* loginpage = new Login();
+        loginpage->show();
+        this->~AdminPage();
+        });
 }
-
-
-
-
-
 
 void AdminPage::setAdminInfo(QString name) {
     adminNameLabel->setText("Admin: " + name);
 }
-
-
-
 
 void AdminPage::setupEnterNavigation(QList<QLineEdit*> fields) {
     for (int i = 0; i < fields.size(); i++) {
@@ -546,14 +502,10 @@ void AdminPage::setupEnterNavigation(QList<QLineEdit*> fields) {
     }
 }
 
-
-
-
-
 void AdminPage::showAddAdminDialog() {
     QDialog* dialog = new QDialog(this);
     dialog->setWindowTitle("Add New Admin");
-    dialog->setFixedSize(420, 280);
+    dialog->setFixedSize(420, 380);
     dialog->setStyleSheet(
         "QDialog { background-color: #0b101e; }"
         "QLabel  { color: #a0a7b5; font-size: 13px; }"
@@ -577,16 +529,27 @@ void AdminPage::showAddAdminDialog() {
     form->setLabelAlignment(Qt::AlignRight);
 
     QLineEdit* nameEdit = new QLineEdit();
-    nameEdit->setPlaceholderText("Full Name");
+    nameEdit->setPlaceholderText("Username");
     nameEdit->setFixedHeight(36);
+
+    QLineEdit* emailEdit = new QLineEdit();
+    emailEdit->setPlaceholderText("admin@mail.com");
+    emailEdit->setFixedHeight(36);
 
     QLineEdit* passwordEdit = new QLineEdit();
     passwordEdit->setPlaceholderText("Password");
     passwordEdit->setEchoMode(QLineEdit::Password);
     passwordEdit->setFixedHeight(36);
 
+    QLineEdit* confirmEdit = new QLineEdit();
+    confirmEdit->setPlaceholderText("Confirm password");
+    confirmEdit->setEchoMode(QLineEdit::Password);
+    confirmEdit->setFixedHeight(36);
+
     form->addRow("Name :", nameEdit);
+    form->addRow("Email :", emailEdit);
     form->addRow("Password :", passwordEdit);
+    form->addRow("Confirm :", confirmEdit);
     dlgLayout->addLayout(form);
 
     QHBoxLayout* btnRow = new QHBoxLayout();
@@ -615,25 +578,46 @@ void AdminPage::showAddAdminDialog() {
 
     connect(confirmBtn, &QPushButton::clicked, dialog, [=]() {
         if (nameEdit->text().trimmed().isEmpty() ||
-            passwordEdit->text().trimmed().isEmpty()) {
+            emailEdit->text().trimmed().isEmpty() ||
+            passwordEdit->text().isEmpty() ||
+            confirmEdit->text().isEmpty()) {
             QMessageBox::warning(dialog, "Missing Info", "Please fill in all fields.");
             return;
         }
 
-        emit addAdminRequested(nameEdit->text().trimmed(), passwordEdit->text().trimmed());
+        CREATE_ADMIN result = create_admin(
+            nameEdit->text().trimmed().toStdString(),
+            emailEdit->text().trimmed().toStdString(),
+            passwordEdit->text().toStdString(),
+            confirmEdit->text().toStdString()
+        );
 
-
-
-        
-        int row = adminsTable->rowCount();
-        adminsTable->insertRow(row);
-        adminsTable->setItem(row, 0, new QTableWidgetItem(nameEdit->text().trimmed()));
-
-        QMessageBox::information(dialog, "Success",
-            "✅  Admin "" + nameEdit->text().trimmed() + "" added successfully!");
-        dialog->accept();
+        switch (result) {
+        case ADMIN_SUCCESS:
+            loadAdminsTable();
+            QMessageBox::information(dialog, "Success",
+                "✅  Admin \"" + nameEdit->text().trimmed() + "\" added successfully!");
+            dialog->accept();
+            break;
+        case ADMIN_PASSWORD_MISMATCH:
+            QMessageBox::warning(dialog, "Error", "Passwords don't match.");
+            break;
+        case ADMIN_WEAK_PASSWORD:
+            QMessageBox::warning(dialog, "Error", "Password too weak.");
+            break;
+        case ADMIN_EMAIL_USED:
+            QMessageBox::warning(dialog, "Error", "Email already used.");
+            break;
+        case ADMIN_USERNAME_TAKEN:
+            QMessageBox::warning(dialog, "Error", "Username already taken.");
+            break;
+        default:
+            QMessageBox::warning(dialog, "Error", "Could not add admin.");
+            break;
+        }
         });
 
+    setupEnterNavigation({ nameEdit, emailEdit, passwordEdit, confirmEdit });
     dialog->exec();
 }
 
@@ -672,19 +656,7 @@ void AdminPage::setupAddAirportForm() {
     airportCombo = new QComboBox();
     airportCombo->setFixedHeight(38);
 
-
-    QString destinations[] = {
-        "Cairo, Egypt", "Alexandria, Egypt", "Luxor, Egypt",
-        "Aswan, Egypt", "Sharm El Sheikh, Egypt", "Hurghada, Egypt",
-        "Marsa Alam, Egypt", "Sohag, Egypt", "Dubai, UAE",
-        "Riyadh, KSA", "Jeddah, KSA", "Kuwait City, Kuwait",
-        "London, UK", "Paris, France", "Rome, Italy",
-        "Istanbul, Turkey", "New York, USA", "Tokyo, Japan",
-        "Berlin, Germany", "Madrid, Spain"
-    };
-
-    for (const QString& dest : destinations)
-        airportCombo->addItem(dest);
+    updateAirportCombo();
 
     form->addRow("Location :", airportCombo);
 
@@ -742,8 +714,9 @@ void AdminPage::setupAddAirportForm() {
     airportScroll->setWidget(addAirportWidget);
     airportScroll->setWidgetResizable(true);
     airportScroll->setStyleSheet("border: none; background-color: #0b101e;");
-    stackedWidget->addWidget(airportScroll);
+    stackedWidget->addWidget(airportScroll); 
 
+    setupEnterNavigation({ airportEmailEdit, airportPassEdit, airportConfirmPassEdit, airportCapacityEdit });
 }
 
 
@@ -751,12 +724,10 @@ void AdminPage::loadUsersTable() {
     usersTable->setRowCount(0);
     for (int i = 0; i < users.size; i++) {
         int row = usersTable->rowCount();
-
         usersTable->insertRow(row);
 
-
         usersTable->setItem(row, 0, new QTableWidgetItem(
-            QString::number(users[i].user_ID)));
+            QString::number(users[i].user_ID + 1)));
 
         usersTable->setItem(row, 1, new QTableWidgetItem(
             QString::fromStdString(users[i].username)));
@@ -768,9 +739,88 @@ void AdminPage::loadUsersTable() {
     }
 }
 
+void AdminPage::loadAdminsTable() {
+    adminsTable->setRowCount(0);
+    for (int i = 0; i < admins.size; i++) {
+        int row = adminsTable->rowCount();
+        adminsTable->insertRow(row);
+        adminsTable->setItem(row, 0, new QTableWidgetItem(
+            QString::fromStdString(admins[i].username)));
+        adminsTable->setItem(row, 1, new QTableWidgetItem(
+            QString::fromStdString(admins[i].email)));
+    }
+}
+
+void AdminPage::loadPlanesTable() {
+    planesTable->setRowCount(0);
+    for (int i = 0; i < models.size; i++) {
+        int row = planesTable->rowCount();
+        planesTable->insertRow(row);
+        planesTable->setItem(row, 0, new QTableWidgetItem(QString::number(i + 1)));
+        planesTable->setItem(row, 1, new QTableWidgetItem(
+            QString::fromStdString(models[i].manufacturer)));
+        planesTable->setItem(row, 2, new QTableWidgetItem(
+            QString::fromStdString(models[i].model)));
+        planesTable->setItem(row, 3, new QTableWidgetItem(
+            QString::number(models[i].number_of_seats)));
+        planesTable->setItem(row, 4, new QTableWidgetItem(
+            QString::number(models[i].speed) + " km/h"));
+    }
+}
+
+void AdminPage::loadAirportsCards() {
+    QLayoutItem* item;
+    while ((item = airportsCardsLayout->takeAt(0)) != nullptr) {
+        if (item->widget()) item->widget()->deleteLater();
+        delete item;
+    }
+
+    for (int i = 0; i < airports.size; i++) {
+        Airport& ap = airports[i];
+
+        QFrame* airportCard = new QFrame();
+        airportCard->setStyleSheet(
+            "QFrame { background-color: #1c2237; border-radius: 10px; border: 1px solid #00AEEF; }"
+            "QLabel { color: white; border: none; }"
+        );
+        airportCard->setMinimumHeight(90);
+
+        QVBoxLayout* cardLayout = new QVBoxLayout(airportCard);
+
+        QLabel* cityLbl = new QLabel("🛫 " + QString::fromStdString(ap.city.location)
+            + " (" + QString::fromStdString(ap.city.code) + ")");
+        cityLbl->setStyleSheet("font: bold 15px; color: #5cd6ff;");
+
+        QLabel* emailLbl = new QLabel(QString::fromStdString(ap.email));
+        emailLbl->setStyleSheet("color: #a0a7b5;");
+
+        QLabel* capLbl = new QLabel("Capacity: " + QString::number(ap.capacity));
+        capLbl->setStyleSheet("color: #a0a7b5;");
+
+        cardLayout->addWidget(cityLbl);
+        cardLayout->addWidget(emailLbl);
+        cardLayout->addWidget(capLbl);
+
+        airportsCardsLayout->addWidget(airportCard);
+    }
+    airportsContainer->adjustSize();
+}
+
+void AdminPage::updateAirportCombo() {
+    if (!airportCombo) return;
+    airportCombo->clear();
+   
+    for (int i = 0; i < cities.size; i++) {
+        airportCombo->addItem(QString::fromStdString(cities[i].location));
+    }
+}
+
 void AdminPage::addAirportToSystem() {
 
-
+    if (airportCombo->count() == 0) {
+        QMessageBox::warning(this, "No Cities", "No available cities left to host an airport.");
+        return;
+    }
 
     if (airportEmailEdit->text().isEmpty() ||
         airportPassEdit->text().isEmpty() ||
@@ -780,13 +830,7 @@ void AdminPage::addAirportToSystem() {
         return;
     }
 
-
-
-
-
-
-    bool ok;//! to check the user entered intiger number
-
+    bool ok;
     int capacity = airportCapacityEdit->text().toInt(&ok);
 
     if (!ok || capacity <= 0) {
@@ -798,58 +842,39 @@ void AdminPage::addAirportToSystem() {
     City selectedCity;
 
     bool found = false;
-
     for (int i = 0; i < cities.size; i++) {
-        if (cities[i].location == selected)
-        {
+        if (cities[i].location == selected) {
             selectedCity = cities[i];
             found = true;
-
             break;
         }
     }
 
     if (!found) {
-        QMessageBox::warning(this, "Error", "City already has an airport or not found."); return;
+        QMessageBox::warning(this, "Error", "City not found.");
+        return;
     }
 
-    CREATE_AIRPORT result = create_airport(selectedCity, airportEmailEdit->text().toStdString(), airportPassEdit->text().toStdString(), airportConfirmPassEdit->text().toStdString(), capacity);
+    CREATE_AIRPORT result = create_airport(
+        selectedCity,
+        airportEmailEdit->text().toStdString(),
+        airportPassEdit->text().toStdString(),
+        airportConfirmPassEdit->text().toStdString(),
+        capacity
+    );
 
     if (result == AIRPORT_SUCCESS) {
-
-
-        QFrame* airportCard = new QFrame();
-        airportCard->setStyleSheet(
-            "QFrame { background-color: #1c2237; border-radius: 10px; border: 1px solid #00AEEF; }"
-            "QLabel { color: white; border: none; }"
-        );
-        airportCard->setMinimumHeight(90);
-
-        QVBoxLayout* cardLayout = new QVBoxLayout(airportCard);
-
-        QLabel* cityLbl = new QLabel("🛫 " + airportCombo->currentText());
-        cityLbl->setStyleSheet("font: bold 15px; color: #5cd6ff;");
-
-        QLabel* emailLbl = new QLabel(airportEmailEdit->text());
-        emailLbl->setStyleSheet("color: #a0a7b5;");
-
-        QLabel* capLbl = new QLabel("Capacity: " + airportCapacityEdit->text());
-        capLbl->setStyleSheet("color: #a0a7b5;");
-
-        cardLayout->addWidget(cityLbl);
-        cardLayout->addWidget(emailLbl);
-        cardLayout->addWidget(capLbl);
-
-        airportsCardsLayout->addWidget(airportCard);
-        airportsContainer->adjustSize();
         airportEmailEdit->clear();
         airportPassEdit->clear();
         airportConfirmPassEdit->clear();
         airportCapacityEdit->clear();
 
+        // Refresh 
+        updateAirportCombo();
+        loadAirportsCards();
+
         QMessageBox::information(this, "Success", "✅ Airport added successfully!");
     }
-
     else if (result == AIRPORT_PASSWORD_MISMATCH)
         QMessageBox::warning(this, "Error", "Passwords don't match.");
     else if (result == AIRPORT_WEAK_PASSWORD)
@@ -859,11 +884,14 @@ void AdminPage::addAirportToSystem() {
 }
 
 void AdminPage::addPlaneToSystem() {
+    QString mfrStr = manufacturerEdit->text().trimmed();
+    QString modelStr = modelEdit->text().trimmed();
     QString seats = planeSeatsEdit->text().trimmed();
     QString speed = planeSpeedEdit->text().trimmed();
     QString fuel = planeFuelEdit->text().trimmed();
 
-    if (seats.isEmpty() || speed.isEmpty() || fuel.isEmpty()) {
+    if (mfrStr.isEmpty() || modelStr.isEmpty() ||
+        seats.isEmpty() || speed.isEmpty() || fuel.isEmpty()) {
         QMessageBox::warning(this, "Missing Info", "Please fill in all fields.");
         return;
     }
@@ -873,13 +901,13 @@ void AdminPage::addPlaneToSystem() {
     double speedVal = speed.toDouble(&ok2);
     double fuelVal = fuel.toDouble(&ok3);
 
-    if (!ok1 || seatsNum <= 0 || !ok2 || !ok3) {
-        QMessageBox::warning(this, "Invalid Input", "Please enter valid numbers.");
+    if (!ok1 || seatsNum <= 0 || !ok2 || speedVal <= 0 || !ok3 || fuelVal <= 0) {
+        QMessageBox::warning(this, "Invalid Input", "Please enter valid positive numbers.");
         return;
     }
 
-    string mfr = manufacturerCombo->currentText().toStdString();
-    string model = modelCombo->currentText().toStdString();
+    string mfr = mfrStr.toStdString();{}
+    string model = modelStr.toStdString();
 
     for (int i = 0; i < models.size; i++) {
         if (models[i].manufacturer == mfr && models[i].model == model) {
@@ -887,35 +915,19 @@ void AdminPage::addPlaneToSystem() {
             return;
         }
     }
-    emit addPlaneModelRequested(
-        manufacturerCombo->currentText(),
-        modelCombo->currentText(),
-        seatsNum, speedVal, fuelVal
-    );
-    int row = planesTable->rowCount();
-    planesTable->insertRow(row);
-    planesTable->setItem(row, 0, new QTableWidgetItem(QString::number(row + 1)));
-    planesTable->setItem(row, 1, new QTableWidgetItem(manufacturerCombo->currentText()));
-    planesTable->setItem(row, 2, new QTableWidgetItem(modelCombo->currentText()));
-    planesTable->setItem(row, 3, new QTableWidgetItem(seats));
-    planesTable->setItem(row, 4, new QTableWidgetItem(speed + " km/h"));
 
+    bool success = add_plane_to_system(mfr, model, seatsNum, speedVal, fuelVal);
+    if (!success) {
+        QMessageBox::warning(this, "Error", "Failed to add model.");
+        return;
+    }
+
+    manufacturerEdit->clear();
+    modelEdit->clear();
     planeSeatsEdit->clear();
     planeSpeedEdit->clear();
     planeFuelEdit->clear();
+    loadPlanesTable();
 
-    bool success = add_plane_to_system(mfr, model, seatsNum, speedVal, fuelVal);
-    cout << success << endl;
     QMessageBox::information(this, "Success", "✅ Model added successfully!");
-
-}
-void AdminPage::updatePlaneModels() {
-    modelCombo->clear();
-    QString mfr = manufacturerCombo->currentText();
-    if (mfr == "Airbus")
-        modelCombo->addItems({ "A220", "A319", "A320", "A321", "A330", "A350", "A380" });
-    else if (mfr == "Boeing")
-        modelCombo->addItems({ "737-800", "737 MAX", "747-400", "767", "777", "787 Dreamliner" });
-    else if (mfr == "Embraer")
-        modelCombo->addItems({ "E170", "E175", "E190", "E195" });
 }
