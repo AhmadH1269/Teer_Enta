@@ -1,6 +1,7 @@
 #include "userpage.h"
 #include "./ui_userpage.h"
 
+#include "data_base.h"
 #include "enums.h"
 #include "functions.h"
 #include "paymentscreen.h"
@@ -10,10 +11,12 @@
 #include "ui_paymentscreen.h"
 #include "login.h"
 
+
 #include <QScrollBar>
 #include <qbuttongroup.h>
 
-UserPageMain::UserPageMain(int initialData,QWidget *parent)
+
+UserPageMain::UserPageMain(int initialData, QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::UserPageMain)
 {
@@ -32,43 +35,132 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
 
     //Populates the table
     for (int row = 0; row < ui->MaintableWidget->rowCount(); row++) {
-        QTableWidgetItem *fromItem = new QTableWidgetItem(QString::fromStdString(flights[row].from));
-        QTableWidgetItem *toItem = new QTableWidgetItem(QString::fromStdString(flights[row].to));
+        QTableWidgetItem* fromItem = new QTableWidgetItem(QString::fromStdString(flights[row].from));
+        QTableWidgetItem* toItem = new QTableWidgetItem(QString::fromStdString(flights[row].to));
 
         auto formattedTime = std::format("{:%F %R}", flights[row].departure_date);
-        QTableWidgetItem *leaveItem = new QTableWidgetItem(QString::fromStdString(formattedTime));
+        QTableWidgetItem* leaveItem = new QTableWidgetItem(QString::fromStdString(formattedTime));
 
         ui->MaintableWidget->setItem(row, 0, fromItem);
         ui->MaintableWidget->setItem(row, 1, toItem);
         ui->MaintableWidget->setItem(row, 2, leaveItem);
     }
 
+    //Booking no. , Departure, Arrival, Takeoff time, total passengers, price
+    ui->BookedTableWidget->setColumnCount(6);
+    QStringList BookingcolNames = { "Booking Number", "Departure Airport", "Arrival Airport", "Take-off Time", "Total Passengers"," " };
+    ui->BookedTableWidget->setHorizontalHeaderLabels(BookingcolNames);
+
+    ui->BookedTableWidget->setRowCount(0); // Prevents stacking duplicate data
+
+    for (int i = 0; i < users[m_uID].tickets.size; i++) {
+        // Creating references so we don't repeat long chains of array lookups
+        auto& currentTicket = users[m_uID].tickets[i];
+        auto& currentFlight = flights[currentTicket.flight_ID];
+
+        int row = ui->BookedTableWidget->rowCount();
+        ui->BookedTableWidget->insertRow(row);
+
+        // Format the time safely
+        auto formattedTime = std::format("{:%F %R}", currentFlight.departure_date);
+
+        // Row Number (1, 2, 3...)
+        ui->BookedTableWidget->setItem(row, 0, new QTableWidgetItem(QString::number(row + 1)));
+
+        // From / To
+        ui->BookedTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(currentFlight.from)));
+        ui->BookedTableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(currentFlight.to)));
+
+        // Departure Date
+        ui->BookedTableWidget->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(formattedTime)));
+
+        // Passenger / Seat Count (Adjust .size to .size() if seats is a std::vector!)
+        int passengerNo = currentTicket.seats.size;
+        ui->BookedTableWidget->setItem(row, 4, new QTableWidgetItem(QString::number(passengerNo)));
+
+        QStringList options = { "Edit Booking", "Delete Booking" };
+
+        QComboBox* comboBox = new QComboBox(ui->BookedTableWidget);
+
+        comboBox->addItems(options);
+
+        comboBox->setPlaceholderText("Options");
+
+        comboBox->setCurrentIndex(-1);
+
+        QObject::connect(comboBox, &QComboBox::activated, [this, comboBox](int index) {
+
+            int currentRealRow = ui->BookedTableWidget->indexAt(comboBox->pos()).row();
+
+            switch (index) {
+            case 0:
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::question(ui->BookedTableWidget, "Edit Booking...", "Are you sure you want to edit this booking?",
+                    QMessageBox::Yes | QMessageBox::No);
+
+                if (reply == QMessageBox::Yes) {
+                    EditBooking();
+                    comboBox->setCurrentIndex(-1);
+                }
+                else {
+                    comboBox->setCurrentIndex(-1);
+
+                }
+                break;
+            case 1:
+                QMessageBox::StandardButton reply2;
+                reply = QMessageBox::question(ui->BookedTableWidget, "Delete Booking...", "Are you sure you want to delete this booking?",
+                    QMessageBox::Yes | QMessageBox::No);
+
+                if (reply == QMessageBox::Yes) {
+                    DeleteBooking();
+                    comboBox->setCurrentIndex(-1);
+                }
+                else {
+                    comboBox->setCurrentIndex(-1);
+
+                }
+                break;
+            default:
+                break;
+            }
+            });
+
+        // 4. Inject the combo box directly into the specified grid coordinates
+        ui->BookedTableWidget->setCellWidget(row, 5, comboBox);
+
+
+    }
+
     //Adds the picture in the booking page
-    QPixmap pixmap1 ("img/Test_Image.png");
+    QPixmap pixmap1("img/Test_Image.png");
     ui->DestinationImaGE->setPixmap(pixmap1);
     ui->DestinationImaGE->setScaledContents(true);
 
 
 
     //Adds the flight selection choices to a group
-    QButtonGroup *SelectedFlight = new QButtonGroup(this);
+    QButtonGroup* SelectedFlight = new QButtonGroup(this);
 
     SelectedFlight->setExclusive(true);
 
     SelectedFlight->addButton(ui->FirstAvFlight);
     SelectedFlight->addButton(ui->SecondAvFlight);
-    SelectedFlight->addButton(ui->ThirdAvFlight);
+   
 
     ui->FirstAvFlight->setCheckable(true);
     ui->SecondAvFlight->setCheckable(true);
-    ui->ThirdAvFlight->setCheckable(true);
+    
+    ui->FirstAvFlight->setChecked(false);
+    ui->SecondAvFlight->setChecked(false);
+    
 
 
     //Start of Seat Selection set-up
     ui->SeatSelection->setColumnWidth(15, 15);
 
-    QString seatClass[3] = {"Economy","Business", "First Class"};
-    double price[3] = {150.50, 200.00, 350.99};
+    QString seatClass[3] = { "Economy","Business", "First Class" };
+    double price[3] = { 150.50, 200.00, 350.99 };
 
 
     //Sets the size and headers of the columna
@@ -76,7 +168,7 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
     ui->SeatSelection->setColumnCount(9);
 
     QStringList RowNums;
-    QStringList ColNames = {"A", "B", "Aisle", "C", "D", "E", "Aisle", "F", "G"};
+    QStringList ColNames = { "A", "B", "Aisle", "C", "D", "E", "Aisle", "F", "G" };
     ui->SeatSelection->setHorizontalHeaderLabels(ColNames);
 
     //To add the seat buttons to the table
@@ -88,11 +180,11 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
 
         for (int col = 0; col < 9; ++col) {
 
-            QPushButton *btn = new QPushButton();
+            QPushButton* btn = new QPushButton();
 
             //Does not add a button to specific columns (Aisle Columns)
-            if (col == 2 || col == 6){
-                QTableWidgetItem *item = new QTableWidgetItem(RowNums[row]);
+            if (col == 2 || col == 6) {
+                QTableWidgetItem* item = new QTableWidgetItem(RowNums[row]);
                 QFont font = item->font();
                 font.setBold(true);
                 item->setFont(font);
@@ -109,9 +201,9 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
 
             //Sets the buttons tool tip and tier based on the row
             //First Class
-            if(row < 2){
+            if (row < 2) {
                 tooltipText = QString("Col: %1\nRow: %2\nClass: %3\nPrice: $%4\nHas Wifi and Power Outlets for charging!")
-                .arg(colLabel)    // Use the letter (A, B, C...) instead of the index
+                    .arg(colLabel)    // Use the letter (A, B, C...) instead of the index
                     .arg(row + 1)   // Use row + 1 for human-readable numbers
                     .arg(seatClass[2])
                     .arg((double)flights[0].high_price, 0, 'f', 2);
@@ -122,9 +214,9 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
             }
 
             //Business Class
-            else if(row < 6){
+            else if (row < 6) {
                 tooltipText = QString("Col: %1\nRow: %2\nClass: %3\nPrice: $%4\nHas Wifi and Power Outlets for charging!")
-                .arg(colLabel)    // Use the letter (A, B, C...) instead of the index
+                    .arg(colLabel)    // Use the letter (A, B, C...) instead of the index
                     .arg(row + 1)   // Use row + 1 for human-readable numbers
                     .arg(seatClass[1])
                     .arg((double)flights[0].mid_price, 0, 'f', 2);
@@ -134,9 +226,9 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
             }
 
             //Economy Class
-            else{
+            else {
                 tooltipText = QString("Col: %1\nRow: %2\nClass: %3\nPrice: $%4\nHas Wifi and Power Outlets for charging!")
-                .arg(colLabel)    // Use the letter (A, B, C...) instead of the index
+                    .arg(colLabel)    // Use the letter (A, B, C...) instead of the index
                     .arg(row + 1)   // Use row + 1 for human-readable numbers
                     .arg(seatClass[0])
                     .arg((double)flights[0].low_price, 0, 'f', 2);
@@ -150,10 +242,16 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
             btn->setChecked(false);
             btn->setProperty("myRow", row);
 
-            connect(btn, &QPushButton::clicked, this, &UserPageMain::handleSeatClick);
+            //connect(btn, &QPushButton::clicked, this, &UserPageMain::handleSeatClick);
             connect(btn, &QPushButton::clicked, this, [=, this]() {
                 this->on_SeatSelection_cellClicked(row, col);
-            });
+                });
+
+            connect(ui->AdultComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, &UserPageMain::updateSeatSelectionUI);
+
+            connect(ui->ChildrenComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, &UserPageMain::updateSeatSelectionUI);
 
             btn->setToolTip(tooltipText);
             ui->SeatSelection->setCellWidget(row, col, btn);
@@ -164,6 +262,10 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
     //End of Seat Selection set-up
 
 
+
+
+
+
     //Sets the profile page based on the user id
     ui->UsernameLabel->setText(QString::fromStdString(users[uID].username));
 
@@ -172,7 +274,7 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
 
     //Signal and slot of the arrival airport drop down
     connect(ui->ArrivalAirport, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &UserPageMain::on_ArrivalAirport_currentIndexChanged);
+        this, &UserPageMain::on_ArrivalAirport_currentIndexChanged);
 
 
     this->applyStyles();
@@ -184,14 +286,9 @@ UserPageMain::UserPageMain(int initialData,QWidget *parent)
     ui->pushButton->setCheckable(true);
 }
 
-UserPageMain::~UserPageMain()
-{
-    SAVE_DATA();
-    delete ui;
-}
 
 //Resets Payment screen
-void PaymentScreen::resetContent(){
+void PaymentScreen::resetContent() {
     ui->PasswordBox->clear();
     ui->UsernameBox->clear();
     ui->stackedWidget->setCurrentIndex(0);
@@ -209,19 +306,22 @@ void PaymentScreen::resetContent(){
 
 
 //Resets the Booking Page
-void UserPageMain::BookingInitial(){
+void UserPageMain::BookingInitial() {
     //Airport Choices Reset
     ui->ArrivalAirport->blockSignals(true);
+    ui->DepartureAirport->blockSignals(true);
+
     ui->ArrivalAirport->setCurrentIndex(-1);
-    ui->ArrivalAirport->blockSignals(false);
     ui->DepartureAirport->setCurrentIndex(-1);
 
+    ui->ArrivalAirport->blockSignals(false);
+    ui->DepartureAirport->blockSignals(false);
 
     //Flight Choice Reset
     ui->AvailableFlights->setVisible(false);
     ui->FirstAvFlight->setChecked(false);
     ui->SecondAvFlight->setChecked(false);
-    ui->ThirdAvFlight->setChecked(false);
+  
 
     //Number of passengers Reset
     ui->AdultComboBox->setVisible(false);
@@ -236,17 +336,13 @@ void UserPageMain::BookingInitial(){
     ui->PriceTotal->setVisible(false);
 
 
-
-
-
-
     ui->AdultComboBox->setCurrentIndex(-1);
     ui->ChildrenComboBox->setCurrentIndex(-1);
     for (int r = 0; r < ui->SeatSelection->rowCount(); ++r) {
         for (int c = 0; c < ui->SeatSelection->columnCount(); ++c) {
-            QPushButton *btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+            QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
 
-            if(btn && btn->isChecked()){
+            if (btn && btn->isChecked()) {
                 btn->setChecked(false);
             }
         }
@@ -298,7 +394,7 @@ void UserPageMain::on_CancelButton1_clicked()
 {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Cancelling...", "Don't wanna make memories abroad anymore?",
-                                  QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
         ui->AdultComboBox->setCurrentIndex(-1);
@@ -311,7 +407,8 @@ void UserPageMain::on_CancelButton1_clicked()
         ui->ChildrenComboBox->setVisible(false);
         ui->ChildrenLabel->setVisible(false);
         ui->stackedWidget->setCurrentIndex(0);
-    } else {
+    }
+    else {
         // User clicked No
     }
 }
@@ -322,12 +419,12 @@ void UserPageMain::on_LogOutButton_clicked()
 {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Loging Out...", "Are you sure you want to log out?",
-                                  QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
         Login* loginpage = new Login();
         loginpage->show();
-        this->close();
+        this->~UserPageMain();
     }
     else {
 
@@ -338,7 +435,7 @@ void UserPageMain::on_LogOutButton_clicked()
 //To show the Booking History
 void UserPageMain::on_pushButton_clicked()
 {
-    if (ui->pushButton->isChecked()){
+    if (ui->pushButton->isChecked()) {
         ui->frame->setVisible(true);
         ui->pushButton->setText("Hide Booking History");
     }
@@ -353,7 +450,7 @@ void UserPageMain::on_pushButton_clicked()
 void UserPageMain::setOptions() {
 
 
-    for(int i = 0; i < flights.size; i++) {
+    for (int i = 0; i < flights.size; i++) {
         ui->DepartureAirport->addItem(QString::fromStdString(flights[i].from));
         ui->ArrivalAirport->addItem(QString::fromStdString(flights[i].to));
 
@@ -365,6 +462,9 @@ void UserPageMain::setOptions() {
 //Logic to show the widgets in the booking page & to show the matching flight routes
 void UserPageMain::on_ArrivalAirport_currentIndexChanged(int index)
 {
+    if (index == -1)
+        return;
+
     ui->AvailableFlights->setVisible(true);
     ui->AdultComboBox->setVisible(true);
     ui->AdultComboBox->setCurrentIndex(-1);
@@ -377,44 +477,45 @@ void UserPageMain::on_ArrivalAirport_currentIndexChanged(int index)
     QString SelLeaveAirport = ui->DepartureAirport->currentText();
     QString SelArriveAirport = ui->ArrivalAirport->currentText();
 
-    Vector<int> flight_ids = search_flights(SelLeaveAirport.toStdString(),SelArriveAirport.toStdString());
+    Vector<int> flight_ids = search_flights(SelLeaveAirport.toStdString(), SelArriveAirport.toStdString());
 
     //Check if the vector is empty
     if (0 >= flight_ids.size) {
-        QMessageBox *msg = new QMessageBox();
+        QMessageBox* msg = new QMessageBox();
         msg->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         msg->setText("No flights found matching the travel route.\nTry again");
         msg->setStyleSheet("QMessageBox {"
-                           "    background-color: #050914;" /* Midnight navy */
-                           "    border: 1px solid #1A2234;"
-                           "}"
-                           "QMessageBox QLabel {"
-                           "    color: #FFFFFF;" /* White text */
-                           "    font-size: 13px;"
-                           "    min-width: 400px;" /* Force the label to be wide */
-                           "    qproperty-alignment: 'AlignCenter';"
-                           "    width: 100%;" /* Qt-specific CSS property */
-                           "}"
+            "    background-color: #050914;" /* Midnight navy */
+            "    border: 1px solid #1A2234;"
+            "}"
+            "QMessageBox QLabel {"
+            "    color: #FFFFFF;" /* White text */
+            "    font-size: 13px;"
+            "    min-width: 400px;" /* Force the label to be wide */
+            "    qproperty-alignment: 'AlignCenter';"
+            "    width: 100%;" /* Qt-specific CSS property */
+            "}"
 
-                           "QDialogButtonBox {"
-                           "    qproperty-centerButtons: true;" /* Centers the buttons in the box */
-                           "}"
+            "QDialogButtonBox {"
+            "    qproperty-centerButtons: true;" /* Centers the buttons in the box */
+            "}"
 
-                           "QPushButton{ background-color: transparent; "
-                           "   color: #94a3b8; "
-                           "   border: 1px solid #334155; "
-                           "   padding: 7px; "
-                           "   border-radius: 8px; "
-                           "   font-weight: bold; "
-                           "   margin-top: 7px; "
-                           "   width: 100%;"
-                           "}"
+            "QPushButton{ background-color: transparent; "
+            "   color: #94a3b8; "
+            "   border: 1px solid #334155; "
+            "   padding: 7px; "
+            "   border-radius: 8px; "
+            "   font-weight: bold; "
+            "   margin-top: 7px; "
+            "   width: 100%;"
+            "}"
 
-                           "QPushButton:hover { "
-                           "   background-color:#1e293b;  "
-                           "   color: white; }"
-                           );
+            "QPushButton:hover { "
+            "   background-color:#1e293b;  "
+            "   color: white; }"
+        );
         msg->show();
+
 
         BookingInitial();
         return;
@@ -437,14 +538,7 @@ void UserPageMain::on_ArrivalAirport_currentIndexChanged(int index)
         ui->LeavingDate2->setText("Leaves At: " + QString::fromStdString(formattedTime));
     }
 
-    //Third Details Block
-    if (flight_ids.size > 2) {
-        IDFlight = flight_ids[2];
-        ui->ThirdPlane->setText("Plane: " + QString::fromStdString(planes[IDFlight].manufacturer) + " " + QString::fromStdString(planes[IDFlight].model));
-        ui->DestinationLabel3->setText("Goes: " + SelArriveAirport);
-        std::string formattedTime = std::format("{:%F %R}", flights[IDFlight].departure_date);
-        ui->LeavingDate3->setText("Leaves At: " + QString::fromStdString(formattedTime));
-    }
+    
 }
 
 
@@ -456,85 +550,101 @@ void UserPageMain::on_ChildrenComboBox_currentIndexChanged(int index)
 
 
 //Seat Handling(Max selected seats AND to show the payment button)
-void UserPageMain::handleSeatClick() {
-    int maxSelection = 1;
-
-    maxSelection += ui->AdultComboBox->currentIndex();
-    maxSelection += ui->ChildrenComboBox->currentIndex();
-
-    QList<QPushButton*> allButtons = ui->SeatSelection->findChildren<QPushButton*>();
-    int currentSelected = 0;
-    for (QPushButton* btn : allButtons) {
-        if (btn->isChecked()) currentSelected++;
-    }
-
-    QPushButton* clickedBtn = qobject_cast<QPushButton*>(sender());
-
-    ui->PriceTotal->setVisible(true);
-    ui->PriceDisplay->setVisible(true);
-    ui->PaymentButton->setVisible(true);
-
-    if (currentSelected > maxSelection) {
-        clickedBtn->setChecked(false);
-        return;
-    }
-
-
-
-
-}
-
-
 //Handles the price
 void UserPageMain::on_SeatSelection_cellClicked(int Row, int column)
 {
-    int SelectedPrice = 0;
-    TotalPrice = 0;
+    QPushButton* clickedBtn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(Row, column));
+    if (!clickedBtn) return;
 
+    // Run the centralized UI and vector update system
+    updateSeatSelectionUI();
+}
+
+void UserPageMain::updateSeatSelectionUI()
+{
+    // 1. Calculate current maximum allowed seat selections
+    int maxSelection = 1 + ui->AdultComboBox->currentIndex() + ui->ChildrenComboBox->currentIndex();
+
+    // 2. Count total active selections across the grid
+    int currentSelected = 0;
+    for (int r = 0; r < ui->SeatSelection->rowCount(); ++r) {
+        for (int c = 0; c < ui->SeatSelection->columnCount(); ++c) {
+            QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+            if (btn && btn->isChecked()) {
+                currentSelected++;
+            }
+        }
+    }
+
+    // 3. Handle over-limit selections (e.g., when combo box values decrease)
+    if (currentSelected > maxSelection) {
+        for (int r = ui->SeatSelection->rowCount() - 1; r >= 0; --r) {
+            for (int c = ui->SeatSelection->columnCount() - 1; c >= 0; --c) {
+                if (currentSelected <= maxSelection) break;
+
+                QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+                if (btn && btn->isChecked()) {
+                    btn->setChecked(false);
+                    currentSelected--;
+                }
+            }
+        }
+    }
+
+    // 4. Dynamic Interface Locking Matrix
+    bool reachedLimit = (currentSelected >= maxSelection);
+    for (int r = 0; r < ui->SeatSelection->rowCount(); ++r) {
+        for (int c = 0; c < ui->SeatSelection->columnCount(); ++c) {
+            QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+            if (btn) {
+                if (!btn->isChecked()) {
+                    btn->setEnabled(!reachedLimit);
+                }
+                else {
+                    btn->setEnabled(true);
+                }
+            }
+        }
+    }
+
+    // 5. Clean, Safe Vector Rebuild Phase
+    SelectedSeats.size = 0;
+    int calculatedTotal = 0;
 
     for (int r = 0; r < ui->SeatSelection->rowCount(); ++r) {
         for (int c = 0; c < ui->SeatSelection->columnCount(); ++c) {
-            QPushButton *btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+            QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
 
-
-            if(btn && btn->isChecked()){
-
+            if (btn && btn->isChecked()) {
                 Seat seat;
                 seat.row = r;
                 seat.column = c;
 
                 if (r < 2) {
                     seat.tier = 1;
-                    SelectedPrice += flights[IDFlight].high_price;
+                    calculatedTotal += flights[IDFlight].high_price;
                 }
                 else if (r < 6) {
                     seat.tier = 2;
-                    SelectedPrice +=  flights[IDFlight].mid_price;
+                    calculatedTotal += flights[IDFlight].mid_price;
                 }
                 else {
                     seat.tier = 3;
-                    SelectedPrice +=  flights[IDFlight].low_price;
+                    calculatedTotal += flights[IDFlight].low_price;
                 }
-
                 SelectedSeats.push_back(seat);
-
-            }
-            else {
-
-                for (int i = 0; i < SelectedSeats.size; ++i) {
-
-                    if(SelectedSeats[i].row == r && SelectedSeats[i].column == c){
-                        SelectedSeats.erase(i);
-                    };
-                }
             }
         }
-
-        TotalPrice += SelectedPrice;
-
-
-        ui->PriceDisplay->setText("$" + QString::number(TotalPrice));
     }
+
+    // 6. Apply structural variables back to class variables and UI labels
+    TotalPrice = calculatedTotal;
+    ui->PriceDisplay->setText("$" + QString::number(TotalPrice));
+
+    bool hasSelections = (currentSelected > 0);
+    ui->PriceTotal->setVisible(hasSelections);
+    ui->PriceDisplay->setVisible(hasSelections);
+    ui->PaymentButton->setVisible(hasSelections);
 }
 
 
@@ -543,87 +653,87 @@ void UserPageMain::on_PaymentButton_clicked()
 {
     int adults = ui->AdultComboBox->currentIndex(), children = ui->ChildrenComboBox->currentIndex();
 
-    CREATE_TICKET newTicket = create_ticket(users[m_uID].user_ID,IDFlight, adults , children , SelectedSeats);
+    CREATE_TICKET newTicket = create_ticket(users[m_uID].user_ID, IDFlight, adults, children, SelectedSeats);
 
-    if(newTicket == BROKE_RULES) {
-        QMessageBox *msg = new QMessageBox();
+    if (newTicket == BROKE_RULES) {
+        QMessageBox* msg = new QMessageBox();
         msg->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         msg->setText("Maximum selected adults and children exceeded");
         msg->setStyleSheet("QMessageBox {"
-                           "    background-color: #050914;" /* Midnight navy */
-                           "    border: 1px solid #1A2234;"
-                           "}"
-                           "QMessageBox QLabel {"
-                           "    color: #FFFFFF;" /* White text */
-                           "    font-size: 13px;"
-                           "    min-width: 400px;" /* Force the label to be wide */
-                           "    qproperty-alignment: 'AlignCenter';"
-                           "    width: 100%;" /* Qt-specific CSS property */
-                           "}"
+            "    background-color: #050914;" /* Midnight navy */
+            "    border: 1px solid #1A2234;"
+            "}"
+            "QMessageBox QLabel {"
+            "    color: #FFFFFF;" /* White text */
+            "    font-size: 13px;"
+            "    min-width: 400px;" /* Force the label to be wide */
+            "    qproperty-alignment: 'AlignCenter';"
+            "    width: 100%;" /* Qt-specific CSS property */
+            "}"
 
-                           "QDialogButtonBox {"
-                           "    qproperty-centerButtons: true;" /* Centers the buttons in the box */
-                           "}"
+            "QDialogButtonBox {"
+            "    qproperty-centerButtons: true;" /* Centers the buttons in the box */
+            "}"
 
-                           "QPushButton{ background-color: transparent; "
-                           "   color: #94a3b8; "
-                           "   border: 1px solid #334155; "
-                           "   padding: 7px; "
-                           "   border-radius: 8px; "
-                           "   font-weight: bold; "
-                           "   margin-top: 7px; "
-                           "   width: 100%;"
-                           "}"
+            "QPushButton{ background-color: transparent; "
+            "   color: #94a3b8; "
+            "   border: 1px solid #334155; "
+            "   padding: 7px; "
+            "   border-radius: 8px; "
+            "   font-weight: bold; "
+            "   margin-top: 7px; "
+            "   width: 100%;"
+            "}"
 
-                           "QPushButton:hover { "
-                           "   background-color:#1e293b;  "
-                           "   color: white; }"
-                           );
+            "QPushButton:hover { "
+            "   background-color:#1e293b;  "
+            "   color: white; }"
+        );
         msg->show();
     }
 
-    if(newTicket == TICKET_SUCCESS){
-        PaymentScreen *Pay = new PaymentScreen(this);
+    if (newTicket == TICKET_SUCCESS) {
+        PaymentScreen* Pay = new PaymentScreen(this);
         Pay->resetContent();
         Pay->setModal(true);
         Pay->setWindowTitle("Payment Screen");
         Pay->showAnimated();
     }
 
-    else if(newTicket == CANNOT_ADD_TICKETS){
-        QMessageBox *msg = new QMessageBox();
+    else if (newTicket == CANNOT_ADD_TICKETS) {
+        QMessageBox* msg = new QMessageBox();
         msg->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         msg->setText("More than 10 tickets have been made");
         msg->setStyleSheet("QMessageBox {"
-                           "    background-color: #050914;" /* Midnight navy */
-                           "    border: 1px solid #1A2234;"
-                           "}"
-                           "QMessageBox QLabel {"
-                           "    color: #FFFFFF;" /* White text */
-                           "    font-size: 13px;"
-                           "    min-width: 400px;" /* Force the label to be wide */
-                           "    qproperty-alignment: 'AlignCenter';"
-                           "    width: 100%;" /* Qt-specific CSS property */
-                           "}"
+            "    background-color: #050914;" /* Midnight navy */
+            "    border: 1px solid #1A2234;"
+            "}"
+            "QMessageBox QLabel {"
+            "    color: #FFFFFF;" /* White text */
+            "    font-size: 13px;"
+            "    min-width: 400px;" /* Force the label to be wide */
+            "    qproperty-alignment: 'AlignCenter';"
+            "    width: 100%;" /* Qt-specific CSS property */
+            "}"
 
-                           "QDialogButtonBox {"
-                           "    qproperty-centerButtons: true;" /* Centers the buttons in the box */
-                           "}"
+            "QDialogButtonBox {"
+            "    qproperty-centerButtons: true;" /* Centers the buttons in the box */
+            "}"
 
-                           "QPushButton{ background-color: transparent; "
-                           "   color: #94a3b8; "
-                           "   border: 1px solid #334155; "
-                           "   padding: 7px; "
-                           "   border-radius: 8px; "
-                           "   font-weight: bold; "
-                           "   margin-top: 7px; "
-                           "   width: 100%;"
-                           "}"
+            "QPushButton{ background-color: transparent; "
+            "   color: #94a3b8; "
+            "   border: 1px solid #334155; "
+            "   padding: 7px; "
+            "   border-radius: 8px; "
+            "   font-weight: bold; "
+            "   margin-top: 7px; "
+            "   width: 100%;"
+            "}"
 
-                           "QPushButton:hover { "
-                           "   background-color:#1e293b;  "
-                           "   color: white; }"
-                           );
+            "QPushButton:hover { "
+            "   background-color:#1e293b;  "
+            "   color: white; }"
+        );
         msg->show();
     }
 
@@ -698,6 +808,11 @@ void UserPageMain::applyStyles() {
         "   color: white;"
         "   border: 1px solid #005A9E;"
         "   font-weight: bold;"
+        "}"
+        "QPushButton:unchecked {"
+        "   background-color: transparent;"
+        "   color: #94a3b8;"
+        "   border: 1px solid #334155;"
         "}"
 
         "#CancelButton1 { "
@@ -791,4 +906,72 @@ void UserPageMain::applyStyles() {
         "   color: #E0E0E0;"
         "}"
     );
+}
+
+
+void UserPageMain::EditBooking() {
+
+    TicketID = ui->BookedTableWidget->currentRow();
+
+    // 1. Ensure a valid row is selected
+    if (TicketID < 0 || TicketID >= users[m_uID].tickets.size) {
+        return;
+    }
+
+    // 2. Get the specific ticket being edited
+    Ticket& targetTicket = users[m_uID].tickets[TicketID];
+
+    // 3. Find the matching flight details from the global vector
+    Flight targetFlight;
+    bool flightFound = false;
+    for (int i = 0; i < flights.size; ++i) {
+        if (flights[i].flight_ID == targetTicket.flight_ID) {
+            targetFlight = flights[i];
+            flightFound = true;
+            break;
+        }
+    }
+
+    // 4. Switch to the booking page
+    ui->stackedWidget->setCurrentIndex(1);
+
+    // 5. Populate text fields (convert std::string to QString)
+    if (flightFound) {
+        ui->DepartureAirport->setCurrentText(QString::fromStdString(targetFlight.from));
+
+        ui->ArrivalAirport->setCurrentText(QString::fromStdString(targetFlight.to));
+    }
+
+
+    // If you have a departure field:
+
+
+// 6. Populate quantities back to comboboxes
+    ui->AdultComboBox->setCurrentIndex(targetTicket.adults - 1);
+    ui->ChildrenComboBox->setCurrentIndex(targetTicket.children);
+
+    // 7. Reset and re-check the saved seats in the table
+    // First, clear all current seat checkmarks
+    for (int r = 0; r < ui->SeatSelection->rowCount(); ++r) {
+        for (int c = 0; c < ui->SeatSelection->columnCount(); ++c) {
+            QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+            if (btn) btn->setChecked(false);
+        }
+    }
+
+    // Second, toggle the buttons for the previously saved seats
+    for (int i = 0; i < targetTicket.seats.size; ++i) {
+        int r = targetTicket.seats[i].row;
+        int c = targetTicket.seats[i].column;
+        QPushButton* btn = qobject_cast<QPushButton*>(ui->SeatSelection->cellWidget(r, c));
+        if (btn) btn->setChecked(true);
+    }
+}
+
+void UserPageMain::DeleteBooking() {
+
+    int indexToDelete = ui->BookedTableWidget->currentRow();
+    auto& userTickets = users[m_uID].tickets;
+    userTickets.erase(indexToDelete);
+    ui->BookedTableWidget->removeRow(indexToDelete);
 }
