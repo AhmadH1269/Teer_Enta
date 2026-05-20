@@ -19,10 +19,9 @@
 #include <QGridLayout>
 #include "data_base.h"
 
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class UserPageMain;
+    class UserPageMain;
 }
 QT_END_NAMESPACE
 
@@ -30,21 +29,29 @@ class UserPageMain : public QMainWindow
 {
     Q_OBJECT
 
-     
 public:
 
-    explicit UserPageMain(int initialData,QWidget *parent = nullptr);
-    ~UserPageMain() override;
+    explicit UserPageMain(int initialData, QWidget* parent = nullptr);
+    ~UserPageMain() {
+        SAVE_DATA;
+        this->close();
+    }
 
     void BacktoHome();
 
     void savechanges();
+
+    void EditBooking();
+
+    void DeleteBooking();
 
     int TotalPrice = 0;
 
     Vector<Seat> SelectedSeats;
 
     int IDFlight;
+
+    int TicketID;
 
 private slots:
 
@@ -62,8 +69,6 @@ private slots:
 
     void on_ProfileButton_clicked();
 
-    void handleSeatClick();
-
     void BookingInitial();
 
     void on_ArrivalAirport_currentIndexChanged(int index);
@@ -76,11 +81,13 @@ private slots:
 
     void on_SeatSelection_cellClicked(int row, int column);
 
+    void updateSeatSelectionUI();
+
     void on_pushButton_clicked();
 
 
 private:
-    Ui::UserPageMain *ui;
+    Ui::UserPageMain* ui;
 
     int m_uID;
 };
