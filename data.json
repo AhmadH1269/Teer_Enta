@@ -1,3 +1,23 @@
+#include <QPushButton>
+
+message.txt
+3 KB
+zizo — 12:33 AM
+{
+    "admins": [
+        {
+            "admin_ID": 0,
+            "email": "jake@gmail.com",
+            "password": 465822,
+
+message.txt
+36 KB
+﻿
+zizo
+saadawi911
+ 
+ 
+* In the end we'll die *
 {
     "admins": [
         {
@@ -92,6 +112,106 @@
             "number_of_flights": 0,
             "number_of_seats": 300,
             "plane_ID": 7,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 8,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 9,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 10,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 11,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 12,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 13,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 14,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 15,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 16,
+            "speed": 900.0
+        },
+        {
+            "current_city": "London",
+            "fuel_price": 6.5,
+            "manufacturer": "Boeing",
+            "model": "787 Dreamliner",
+            "number_of_flights": 0,
+            "number_of_seats": 300,
+            "plane_ID": 17,
             "speed": 900.0
         }
     ],
@@ -208,6 +328,21 @@
                     "plane_ID": 3,
                     "to": "DXB",
                     "to_airport_ID": 1
+                },
+                {
+                    "arrival_date": 29655358,
+                    "available_seats": 105,
+                    "departure_date": 29655171,
+                    "estimated_time": 187,
+                    "flight_ID": 1,
+                    "from": "CAI",
+                    "from_airport_ID": 4,
+                    "high_price": 1046,
+                    "low_price": 523,
+                    "mid_price": 785,
+                    "plane_ID": 15,
+                    "to": "DXB",
+                    "to_airport_ID": 1
                 }
             ],
             "scheduled_planes_IDs": [
@@ -311,20 +446,153 @@
                 "longitude": 30.1
             },
             "email": "port@gmail.com",
-            "free_planes_IDs": [],
-            "future_flights_IDs": [],
+            "free_planes_IDs": [
+                16,
+                17
+            ],
+            "future_flights_IDs": [
+                14,
+                15,
+                16
+            ],
             "password": 466760,
-            "pending_planes": [],
-            "pending_requests": [],
+            "pending_planes": [
+                15
+            ],
+            "pending_requests": [
+                {
+                    "arrival_date": 29655222,
+                    "available_seats": 300,
+                    "departure_date": 29655169,
+                    "estimated_time": 53,
+                    "flight_ID": 1,
+                    "from": "MIT",
+                    "from_airport_ID": 5,
+                    "high_price": 45,
+                    "low_price": 22,
+                    "mid_price": 33,
+                    "plane_ID": 12,
+                    "to": "CAI",
+                    "to_airport_ID": 4
+                }
+            ],
             "scheduled_planes_IDs": [],
-            "sent_requests": []
+            "sent_requests": [
+                {
+                    "arrival_date": 29655358,
+                    "available_seats": 105,
+                    "departure_date": 29655171,
+                    "estimated_time": 187,
+                    "flight_ID": 1,
+                    "from": "CAI",
+                    "from_airport_ID": 4,
+                    "high_price": 1046,
+                    "low_price": 523,
+                    "mid_price": 785,
+                    "plane_ID": 15,
+                    "to": "DXB",
+                    "to_airport_ID": 1
+                }
+            ]
+        },
+        {
+            "airport_ID": 5,
+            "capacity": 20,
+            "city": {
+                "city": "London",
+                "code": "MIT",
+                "latitude": 35.9,
+                "longitude": 37.1
+            },
+            "email": "port2@gmail.com",
+            "free_planes_IDs": [],
+            "future_flights_IDs": [
+                14,
+                15,
+                16
+            ],
+            "password": 472222,
+            "pending_planes": [
+                8,
+                9,
+                10,
+                12
+            ],
+            "pending_requests": [],
+            "scheduled_planes_IDs": [
+                11,
+                13,
+                14
+            ],
+            "sent_requests": [
+                {
+                    "arrival_date": 29655174,
+                    "available_seats": 105,
+                    "departure_date": 29655160,
+                    "estimated_time": 14,
+                    "flight_ID": 1,
+                    "from": "MIT",
+                    "from_airport_ID": 5,
+                    "high_price": 78,
+                    "low_price": 39,
+                    "mid_price": 58,
+                    "plane_ID": 9,
+                    "to": "CAI",
+                    "to_airport_ID": 0
+                },
+                {
+                    "arrival_date": 29655220,
+                    "available_seats": 105,
+                    "departure_date": 29655167,
+                    "estimated_time": 53,
+                    "flight_ID": 0,
+                    "from": "MIT",
+                    "from_airport_ID": 5,
+                    "high_price": 298,
+                    "low_price": 149,
+                    "mid_price": 224,
+                    "plane_ID": 11,
+                    "to": "CAI",
+                    "to_airport_ID": 4
+                },
+                {
+                    "arrival_date": 29655222,
+                    "available_seats": 300,
+                    "departure_date": 29655169,
+                    "estimated_time": 53,
+                    "flight_ID": 1,
+                    "from": "MIT",
+                    "from_airport_ID": 5,
+                    "high_price": 45,
+                    "low_price": 22,
+                    "mid_price": 33,
+                    "plane_ID": 12,
+                    "to": "CAI",
+                    "to_airport_ID": 4
+                },
+                {
+                    "arrival_date": 29655222,
+                    "available_seats": 105,
+                    "departure_date": 29655169,
+                    "estimated_time": 53,
+                    "flight_ID": 2,
+                    "from": "MIT",
+                    "from_airport_ID": 5,
+                    "high_price": 298,
+                    "low_price": 149,
+                    "mid_price": 224,
+                    "plane_ID": 13,
+                    "to": "CAI",
+                    "to_airport_ID": 4
+                }
+            ]
         }
     ],
     "flights": [
         {
-            "arrival_date": 30000180,
+            "arrival_date": 29871580,
             "available_seats": 150,
-            "departure_date": 30000000,
+            "departure_date": 29871400,
             "estimated_time": 180,
             "flight_ID": 0,
             "from": "Cairo",
@@ -337,9 +605,9 @@
             "to_airport_ID": 1
         },
         {
-            "arrival_date": 30001420,
+            "arrival_date": 29901420,
             "available_seats": 200,
-            "departure_date": 30001000,
+            "departure_date": 29901000,
             "estimated_time": 420,
             "flight_ID": 1,
             "from": "Dubai",
@@ -530,6 +798,51 @@
             "plane_ID": 4,
             "to": "DXB",
             "to_airport_ID": 1
+        },
+        {
+            "arrival_date": 29655220,
+            "available_seats": 105,
+            "departure_date": 29655167,
+            "estimated_time": 53,
+            "flight_ID": 14,
+            "from": "MIT",
+            "from_airport_ID": 5,
+            "high_price": 298,
+            "low_price": 149,
+            "mid_price": 224,
+            "plane_ID": 11,
+            "to": "CAI",
+            "to_airport_ID": 4
+        },
+        {
+            "arrival_date": 29655222,
+            "available_seats": 105,
+            "departure_date": 29655169,
+            "estimated_time": 53,
+            "flight_ID": 15,
+            "from": "MIT",
+            "from_airport_ID": 5,
+            "high_price": 298,
+            "low_price": 149,
+            "mid_price": 224,
+            "plane_ID": 13,
+            "to": "CAI",
+            "to_airport_ID": 4
+        },
+        {
+            "arrival_date": 29655222,
+            "available_seats": 300,
+            "departure_date": 29655169,
+            "estimated_time": 53,
+            "flight_ID": 16,
+            "from": "MIT",
+            "from_airport_ID": 5,
+            "high_price": 45,
+            "low_price": 22,
+            "mid_price": 33,
+            "plane_ID": 14,
+            "to": "CAI",
+            "to_airport_ID": 4
         }
     ],
     "models": [
@@ -541,6 +854,16 @@
             "number_of_flights": 0,
             "number_of_seats": 300,
             "plane_ID": 2,
+            "speed": 900.0
+        },
+        {
+            "current_city": "",
+            "fuel_price": 15.0,
+            "manufacturer": "El Tawhid wl Noor",
+            "model": "e.g123",
+            "number_of_flights": 0,
+            "number_of_seats": 105,
+            "plane_ID": 1,
             "speed": 900.0
         }
     ],
@@ -596,6 +919,255 @@
             "tier_preference": 2,
             "user_ID": 2,
             "username": "User"
+        },
+        {
+            "email": "Gomaa@gmial.com",
+            "flights_history": [],
+            "future_flights": [],
+            "password": 454542,
+            "phone_number": "010203040",
+            "seat_preference": 1,
+            "tickets": [
+                {
+                    "adults": 1,
+                    "children": 2,
+                    "flight_ID": 2,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 0,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 11,
+                            "tier": 3
+                        },
+                        {
+                            "booked": true,
+                            "column": 3,
+                            "row": 11,
+                            "tier": 3
+                        }
+                    ]
+                },
+                {
+                    "adults": 2,
+                    "children": 2,
+                    "flight_ID": 2,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 0,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 11,
+                            "tier": 3
+                        },
+                        {
+                            "booked": true,
+                            "column": 3,
+                            "row": 11,
+                            "tier": 3
+                        }
+                    ]
+                },
+                {
+                    "adults": 1,
+                    "children": 0,
+                    "flight_ID": 1,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 1,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 3,
+                            "row": 1,
+                            "tier": 1
+                        }
+                    ]
+                },
+                {
+                    "adults": 2,
+                    "children": 0,
+                    "flight_ID": 1,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 0,
+                            "row": 1,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 3,
+                            "row": 1,
+                            "tier": 1
+                        }
+                    ]
+                },
+                {
+                    "adults": 2,
+                    "children": 2,
+                    "flight_ID": 2,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 1,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 3,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 4,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 5,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 7,
+                            "row": 4,
+                            "tier": 2
+                        }
+                    ]
+                },
+                {
+                    "adults": 3,
+                    "children": 2,
+                    "flight_ID": 2,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 1,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 3,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 4,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 5,
+                            "row": 4,
+                            "tier": 2
+                        },
+                        {
+                            "booked": true,
+                            "column": 7,
+                            "row": 4,
+                            "tier": 2
+                        }
+                    ]
+                },
+                {
+                    "adults": 1,
+                    "children": 2,
+                    "flight_ID": 2,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 0,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 1,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 11,
+                            "tier": 3
+                        },
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 12,
+                            "tier": 3
+                        }
+                    ]
+                },
+                {
+                    "adults": 2,
+                    "children": 2,
+                    "flight_ID": 2,
+                    "seats": [
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 0,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 1,
+                            "tier": 1
+                        },
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 11,
+                            "tier": 3
+                        },
+                        {
+                            "booked": true,
+                            "column": 8,
+                            "row": 12,
+                            "tier": 3
+                        }
+                    ]
+                }
+            ],
+            "tier_preference": 2,
+            "user_ID": 3,
+            "username": "Gomaa"
         }
     ]
 }
