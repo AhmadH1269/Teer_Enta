@@ -45,7 +45,7 @@ QtAirport::QtAirport(int airportID ,QWidget* parent) : QMainWindow(parent), airp
     connect(btnLogout, &QPushButton::clicked, this, [=]() {
         Login* loginpage = new Login();
         loginpage->show();
-        this->close();
+        this->~QtAirport();
         });
 
     // Pages
@@ -678,6 +678,3 @@ void QtAirport::applyStyles() {
 
     );
 }
-
-
-
