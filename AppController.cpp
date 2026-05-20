@@ -13,14 +13,14 @@ AppController::AppController(QWidget* parent) : QStackedWidget(parent) {
     this->setPalette(pal);
 
     loginPage = new Login();
-    adminPage = new AdminPage();
+    //adminPage = new AdminPage();
    
     signupPage = new SignupPage();
     
 
-    this->addWidget(loginPage);   // 0
-    this->addWidget(adminPage);   // 1
-    this->addWidget(signupPage);  // 2
+    this->addWidget(loginPage);   
+    this->addWidget(adminPage);   
+    this->addWidget(signupPage);  
        
 
     this->setCurrentWidget(loginPage);
@@ -43,30 +43,6 @@ void AppController::setupConnections() {
         loginPage->clearFields();
         this->setCurrentWidget(loginPage);
         });
-
-    
-
-    connect(adminPage, &AdminPage::addAdminRequested,
-        this, [](QString name, QString password) {
-            create_admin(
-                name.toStdString(),
-                name.toStdString() + "@system.com",
-                password.toStdString(),
-                password.toStdString()
-            );
-        }
-    );
-
-    connect(adminPage, &AdminPage::addPlaneModelRequested,
-        this, [this](QString mfr, QString mdl, int seats, double speed, double fuel) {
-            Airplane newModel = {
-                number_of_planes++, "", seats,
-                mfr.toStdString(), mdl.toStdString(),
-                0, speed, fuel
-            };
-            models.push_back(newModel);
-        }
-    );
 
     connect(loginPage, &Login::goToSignup, this, [=]() {
         this->setCurrentWidget(signupPage);
