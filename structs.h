@@ -28,9 +28,8 @@ extern int number_of_planes;
 extern Vector<Airplane> models;
 
 
-	//STILL TO BE REVIEWED
 struct Flight {
-	
+	//------------------STILL TO BE REVIEWED---------------------
 	int flight_ID;
 	int from_airport_ID;
 	int to_airport_ID;
